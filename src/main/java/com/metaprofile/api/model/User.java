@@ -23,7 +23,6 @@ public class User {
     private Long id;
 
     @NotBlank
-    @Max(20)
     @Column(name = "username")
     private String username;
 
