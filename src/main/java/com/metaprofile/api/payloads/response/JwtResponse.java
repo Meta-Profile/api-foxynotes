@@ -4,10 +4,10 @@ import java.util.List;
 
 public class JwtResponse {
     private String token;
+    private String type = "Bearer";
     private Long userId;
     private String username;
     private String email;
-    private String type;
     private List<String> roles;
 
     public JwtResponse(String token, Long userId, String username, String email, List<String> roles) {
