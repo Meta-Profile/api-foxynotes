@@ -38,6 +38,9 @@ public class File {
     @Column(name = "sender_id")
     private Long senderId;
 
+    // todo: сделать enum для статуса
+    // todo: сделать статус 2, что означает, что доступ к файлу публичный
+    // @Enumerated(EnumType.ORDINAL)
     @Column(name = "status")
     private Integer status;
 
