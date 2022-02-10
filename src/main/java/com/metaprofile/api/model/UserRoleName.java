@@ -1,7 +1,7 @@
 package com.metaprofile.api.model;
 
 public enum UserRoleName {
-    USER,
-    MODER,
-    ADMIN
+    ROLE_USER,
+    ROLE_MODERATOR,
+    ROLE_ADMIN
 }
