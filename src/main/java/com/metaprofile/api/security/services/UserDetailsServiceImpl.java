@@ -1,4 +1,4 @@
-package com.metaprofile.api.service;
+package com.metaprofile.api.security.services;
 
 import com.metaprofile.api.model.User;
 import com.metaprofile.api.model.UserDetailsImpl;

@@ -1,6 +1,6 @@
 package com.metaprofile.api.security.jwt;
 
-import com.metaprofile.api.service.UserDetailsServiceImpl;
+import com.metaprofile.api.security.services.UserDetailsServiceImpl;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

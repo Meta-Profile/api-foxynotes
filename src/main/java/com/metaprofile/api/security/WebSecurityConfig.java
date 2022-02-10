@@ -1,8 +1,8 @@
-package com.metaprofile.api.configuration;
+package com.metaprofile.api.security;
 
 import com.metaprofile.api.security.jwt.AuthEntryPointJwt;
 import com.metaprofile.api.security.jwt.AuthTokenFilter;
-import com.metaprofile.api.service.UserDetailsServiceImpl;
+import com.metaprofile.api.security.services.UserDetailsServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
