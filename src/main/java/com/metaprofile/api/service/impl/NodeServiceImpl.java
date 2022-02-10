@@ -1,10 +1,11 @@
-package com.metaprofile.api.service;
+package com.metaprofile.api.service.impl;
 
 import com.metaprofile.api.exceptions.MetaProfileException;
 import com.metaprofile.api.exceptions.NotDeniedMetaProfileException;
 import com.metaprofile.api.exceptions.NotFoundMetaProfileException;
 import com.metaprofile.api.model.Node;
 import com.metaprofile.api.repository.NodeRepository;
+import com.metaprofile.api.service.NodeService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -31,12 +32,12 @@ public class NodeServiceImpl implements NodeService {
 
     @Override
     public Node getNodeByIdSafe(Integer nodeId, Integer testUserId) throws NotFoundMetaProfileException, NotDeniedMetaProfileException {
-        Optional<Node> node = getNodeById(nodeId);
+
+        Node node = getNodeById(nodeId).orElseThrow(NotFoundMetaProfileException::new);
 
         // Если не найден
-        if(node.isEmpty()) throw new NotFoundMetaProfileException();
-        if(!node.get().isAccessibleForUserId(testUserId)) throw new NotDeniedMetaProfileException();
+        if(!node.isAccessibleForUserId(testUserId)) throw new NotDeniedMetaProfileException();
 
-        return node.get();
+        return node;
     }
 }
