@@ -2,7 +2,7 @@ package com.metaprofile.api.security.jwt;
 
 import java.util.Date;
 
-import com.metaprofile.api.model.UserDetailsImpl;
+import com.metaprofile.api.security.models.UserDetailsImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;

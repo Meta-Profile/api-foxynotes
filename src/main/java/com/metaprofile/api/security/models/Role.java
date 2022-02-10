@@ -1,4 +1,6 @@
-package com.metaprofile.api.model;
+package com.metaprofile.api.security.models;
+
+import com.metaprofile.api.security.models.UserRoleName;
 
 import javax.persistence.*;
 

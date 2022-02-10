@@ -1,7 +1,7 @@
 package com.metaprofile.api.repository;
 
-import com.metaprofile.api.model.Role;
-import com.metaprofile.api.model.UserRoleName;
+import com.metaprofile.api.security.models.Role;
+import com.metaprofile.api.security.models.UserRoleName;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

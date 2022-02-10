@@ -1,4 +1,4 @@
-package com.metaprofile.api.model;
+package com.metaprofile.api.security.models;
 
 public enum UserRoleName {
     ROLE_USER,

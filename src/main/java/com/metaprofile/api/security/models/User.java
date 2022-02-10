@@ -1,10 +1,10 @@
-package com.metaprofile.api.model;
+package com.metaprofile.api.security.models;
 
+import com.metaprofile.api.security.models.Role;
 import org.jetbrains.annotations.NotNull;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
-import javax.validation.constraints.Max;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.util.HashSet;

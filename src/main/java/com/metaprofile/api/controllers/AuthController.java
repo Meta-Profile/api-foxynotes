@@ -1,9 +1,9 @@
 package com.metaprofile.api.controllers;
 
-import com.metaprofile.api.model.Role;
-import com.metaprofile.api.model.User;
-import com.metaprofile.api.model.UserDetailsImpl;
-import com.metaprofile.api.model.UserRoleName;
+import com.metaprofile.api.security.models.Role;
+import com.metaprofile.api.security.models.User;
+import com.metaprofile.api.security.models.UserDetailsImpl;
+import com.metaprofile.api.security.models.UserRoleName;
 import com.metaprofile.api.payloads.request.LoginRequest;
 import com.metaprofile.api.payloads.request.SignupRequest;
 import com.metaprofile.api.payloads.response.JwtResponse;
