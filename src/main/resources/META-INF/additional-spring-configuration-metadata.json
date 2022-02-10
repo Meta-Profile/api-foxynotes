@@ -1,0 +1,14 @@
+{
+  "properties": [
+    {
+      "name": "metaprofile.app.jwtExpirationMs",
+      "type": "java.lang.String",
+      "description": "Description for metaprofile.app.jwtExpirationMs."
+    },
+    {
+      "name": "metaprofile.app.jwtSecret",
+      "type": "java.lang.String",
+      "description": "Description for metaprofile.app.jwtSecret."
+    }
+  ]
+}
