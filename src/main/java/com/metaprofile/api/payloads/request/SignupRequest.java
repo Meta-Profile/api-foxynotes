@@ -1,10 +1,13 @@
-package com.metaprofile.api.payloads;
+package com.metaprofile.api.payloads.request;
 
+import javax.validation.constraints.NotBlank;
 import java.util.HashSet;
 import java.util.Set;
 
 public class SignupRequest extends LoginRequest {
+    @NotBlank
     private String email;
+
     private Set<String> role = new HashSet<>();
 
     public String getEmail() {

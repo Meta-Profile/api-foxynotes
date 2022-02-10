@@ -1,4 +1,4 @@
-package com.metaprofile.api.payloads;
+package com.metaprofile.api.payloads.request;
 
 import javax.validation.constraints.NotBlank;
 

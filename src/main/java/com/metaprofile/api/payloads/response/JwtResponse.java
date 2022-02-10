@@ -1,6 +1,5 @@
 package com.metaprofile.api.payloads.response;
 
-import java.util.HashSet;
 import java.util.List;
 
 public class JwtResponse {
@@ -8,6 +7,7 @@ public class JwtResponse {
     private Long userId;
     private String username;
     private String email;
+    private String type;
     private List<String> roles;
 
     public JwtResponse(String token, Long userId, String username, String email, List<String> roles) {
@@ -56,5 +56,13 @@ public class JwtResponse {
 
     public void setRoles(List<String> roles) {
         this.roles = roles;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }
