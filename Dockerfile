@@ -7,6 +7,8 @@ EXPOSE 8080
 
 RUN /src/gradlew build
 
+RUN ls **/*
+
 COPY /src/build/libs/api-0.0.1-SNAPSHOT.jar /src/api.jar
 
 ENTRYPOINT ["java","-jar","/src/api.jar"]
