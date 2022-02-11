@@ -1,28 +1,18 @@
-# This is a basic workflow to help you get started with Actions
+name: Build And Deploy CI
 
-name: Docker CI
-
-# Controls when the workflow will run
 on:
-  # Triggers the workflow on push or pull request events but only for the master branch
   push:
     branches: [ master ]
   pull_request:
     branches: [ master ]
 
-  # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
   build:
-    # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
 
       - name: Login docker
@@ -37,11 +27,11 @@ jobs:
       - name: Deploy process
         uses: appleboy/ssh-action@master
         env:
-          APP: "metaprofile"
+          APP: ${{secrets.APP_NAME}}
           USER: ${{secrets.DOCKER_USER}}
           PASS: ${{secrets.DOCKER_PASSWORD}}
-          TARGET_PORT: "3010"
-          DOCKER_PORT: "8080"
+          TARGET_PORT: ${{ secrets.TARGET_PORT }}
+          DOCKER_PORT: ${{ secrets.DOCKER_PORT }}
         with:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.HOST_USERNAME }}
@@ -53,4 +43,3 @@ jobs:
             docker rm -fv $APP
             docker login -u $USER -p $PASS
             docker run --name $APP -p $TARGET_PORT:$DOCKER_PORT -d $USER/$APP:latest
-
