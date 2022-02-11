@@ -27,9 +27,18 @@ jobs:
 
       - name: Login docker
         run: docker login -u ${{secrets.DOCKER_USER}} -p ${{secrets.DOCKER_PASSWORD}}
-        
+
       - name: Build docker
         run: docker build . --file Dockerfile --tag ${{secrets.DOCKER_USER}}/metaprofile:latest
 
       - name: Push docker
         run: docker push ${{secrets.DOCKER_USER}}/metaprofile:latest
+
+      - name: Deploy process
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.HOST_USERNAME }}
+          password: ${{ secrets.HOST_PASSWORD }}
+          port: ${{ secrets.HOST_PORT }}
+          script: whoami
