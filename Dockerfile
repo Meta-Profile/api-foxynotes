@@ -1,14 +1,13 @@
-FROM openjdk:17-jdk-alpine
+FROM gradle:7.3.3-jdk17-alpine AS build
 
-COPY . /src
-WORKDIR /src
+COPY --chown=gradle:gradle . /home/gradle/src
+WORKDIR /home/gradle/src
+RUN gradle bootJar --no-daemon
+
+FROM openjdk:17-jdk-alpine
 
 EXPOSE 8080
 
-RUN /src/gradlew build
+COPY --from=build /home/gradle/src/build/libs/*.jar /app.jar
 
-RUN ls build/**/*
-
-COPY /build/libs/src-0.0.1-SNAPSHOT.jar /api.jar
-
-ENTRYPOINT ["java","-jar","/api.jar"]
+ENTRYPOINT ["java","-jar","/app.jar"]
