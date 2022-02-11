@@ -29,7 +29,7 @@ jobs:
         run: docker login -u ${{secrets.DOCKER_USER}} -p ${{secrets.DOCKER_PASSWORD}}
         
       - name: Build docker
-        run: docker build . --file Dockerfile --tag notafoks/metaprofile-api:$(date +%s)
+        run: docker build . --file Dockerfile --tag ${{secrets.DOCKER_USER}}/metaprofile:latest
 
       - name: Push docker
-        run: docker push ${{secrets.DOCKER_USER}}/metaprofile
+        run: docker push ${{secrets.DOCKER_USER}}/metaprofile:latest
