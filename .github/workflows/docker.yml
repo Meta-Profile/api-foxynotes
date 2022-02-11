@@ -24,6 +24,10 @@ jobs:
       - name: Push docker
         run: docker push ${{secrets.DOCKER_USER}}/metaprofile:latest
 
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
       - name: Deploy process
         uses: appleboy/ssh-action@master
         env:
