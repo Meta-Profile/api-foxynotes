@@ -30,3 +30,6 @@ jobs:
         
       - name: Build docker
         run: docker build . --file Dockerfile --tag notafoks/metaprofile-api:$(date +%s)
+
+      - name: Push docker
+        run: docker push ${{secrets.DOCKER_USER}}/metaprofile
