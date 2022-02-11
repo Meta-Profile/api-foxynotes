@@ -36,9 +36,21 @@ jobs:
 
       - name: Deploy process
         uses: appleboy/ssh-action@master
+        env:
+          APP: "metaprofile"
+          USER: ${{secrets.DOCKER_USER}}
+          PASS: ${{secrets.DOCKER_PASSWORD}}
+          TARGET_PORT: "3010"
+          DOCKER_PORT: "8080"
         with:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.HOST_USERNAME }}
           password: ${{ secrets.HOST_PASSWORD }}
           port: ${{ secrets.HOST_PORT }}
-          script: /home/meta/deploy_api.sh
+          envs: APP,USER,PASS,DOCKER_PORT,TARGET_PORT
+          script: |
+            docker ps -q --filter "name=$APP" | grep -q . && docker stop $APP
+            docker rm -fv $APP
+            docker login -u $USER -p $PASS
+            docker run --name $APP -p $TARGET_PORT:$DOCKER_PORT -d $USER/$APP:latest
+
