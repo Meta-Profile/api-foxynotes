@@ -3,6 +3,7 @@ package com.metaprofile.api.controllers;
 import com.metaprofile.api.core.ControllerResponse;
 import com.metaprofile.api.model.File;
 import com.metaprofile.api.model.enums.FileStatus;
+import com.metaprofile.api.payloads.request.FileStatusRequest;
 import com.metaprofile.api.payloads.response.UploadFileResponse;
 import com.metaprofile.api.repository.FileRepository;
 import com.metaprofile.api.security.models.UserDetailsImpl;
@@ -65,10 +66,11 @@ public class FileController {
 
     @PostMapping("/status/{fileId:.+}")
     @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<ControllerResponse<Boolean>> updateStatus(@PathVariable Long fileId, Authentication authentication){
+    public ResponseEntity<ControllerResponse<Boolean>> updateStatus(@PathVariable Long fileId, @RequestBody FileStatusRequest fileStatusRequest, Authentication authentication) {
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-        File file = fileService.getFileById(fileId, userDetails.getId());
-        return new ControllerResponse<>(true).response();
+        return new ControllerResponse<>(
+                fileService.updateStatus(fileId, userDetails.getId(), fileStatusRequest.getStatus())
+        ).response();
     }
 
     @GetMapping("/get/{fileId:.+}")
