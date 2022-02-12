@@ -24,10 +24,6 @@ jobs:
       - name: Push docker
         run: docker push ${{secrets.DOCKER_USER}}/metaprofile:latest
 
-  deploy:
-    runs-on: ubuntu-latest
-
-    steps:
       - name: Deploy process
         uses: appleboy/ssh-action@master
         env:
@@ -43,7 +39,4 @@ jobs:
           port: ${{ secrets.HOST_PORT }}
           envs: APP,USER,PASS,DOCKER_PORT,TARGET_PORT
           script: |
-            docker ps -q --filter "name=$APP" | grep -q . && docker stop $APP
-            docker rm -fv $APP
-            docker login -u $USER -p $PASS
-            docker run --name $APP -p $TARGET_PORT:$DOCKER_PORT -d $USER/$APP:latest
+            /home/meta/deploy_api.sh
