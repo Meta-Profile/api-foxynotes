@@ -2,6 +2,7 @@ package com.metaprofile.api.service;
 
 import com.metaprofile.api.exceptions.FileNotFoundException;
 import com.metaprofile.api.model.File;
+import com.metaprofile.api.model.enums.FileStatus;
 
 import java.util.Optional;
 
@@ -22,5 +23,14 @@ public interface FileService {
      * @throws FileNotFoundException
      */
     Boolean removeFile(Long fileId, Long userId) throws FileNotFoundException;
+
+    /**
+     * Обновляет статус файла
+     * @param fileId
+     * @param userId
+     * @return
+     * @throws FileNotFoundException
+     */
+    Boolean updateStatus(Long fileId, Long userId, FileStatus status) throws FileNotFoundException;
 
 }

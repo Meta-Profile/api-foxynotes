@@ -1,5 +1,6 @@
 package com.metaprofile.api.model;
 
+import com.metaprofile.api.model.enums.FileStatus;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -38,11 +39,9 @@ public class File {
     @Column(name = "sender_id")
     private Long senderId;
 
-    // todo: сделать enum для статуса
-    // todo: сделать статус 2, что означает, что доступ к файлу публичный
-    // @Enumerated(EnumType.ORDINAL)
+    @Enumerated(EnumType.ORDINAL)
     @Column(name = "status")
-    private Integer status;
+    private FileStatus status;
 
     @Column(name = "size")
     private Long size;
@@ -50,14 +49,15 @@ public class File {
     @Column(name = "time")
     private Timestamp time;
 
-    public File(){
+    public File() {
     }
-    public File(String realName, MultipartFile file, Long userId) {
+
+    public File(String realName, MultipartFile file, Long userId, FileStatus fileStatus) {
         this.realName = realName;
         this.size = file.getSize();
         this.type = file.getContentType();
         this.senderId = userId;
-        this.status = 1;
+        this.status = fileStatus;
         this.time = Timestamp.from(Instant.now());
 
         // Построение имени объекта
@@ -70,9 +70,10 @@ public class File {
 
     /**
      * Возвращает путь до файла
+     *
      * @return путь до файла
      */
-    public String getURL(){
+    public String getURL() {
         return ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path("/api/v1/file/get/")
                 .path(getId().toString())
@@ -81,6 +82,7 @@ public class File {
 
     /**
      * Возвращает синтетический путь до фалйа
+     *
      * @return
      */
     public String getPath() {
@@ -107,7 +109,7 @@ public class File {
         this.senderId = senderId;
     }
 
-    public void setStatus(Integer status) {
+    public void setStatus(FileStatus status) {
         this.status = status;
     }
 
@@ -135,7 +137,7 @@ public class File {
         return senderId;
     }
 
-    public Integer getStatus() {
+    public FileStatus getStatus() {
         return status;
     }
 
