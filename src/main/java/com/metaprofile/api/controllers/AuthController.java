@@ -1,5 +1,9 @@
 package com.metaprofile.api.controllers;
 
+import com.metaprofile.api.core.ControllerResponse;
+import com.metaprofile.api.security.exceptions.AuthEmailIsTakenException;
+import com.metaprofile.api.security.exceptions.AuthRoleNotFoundException;
+import com.metaprofile.api.security.exceptions.AuthUsernameIsTakenException;
 import com.metaprofile.api.security.models.Role;
 import com.metaprofile.api.security.models.User;
 import com.metaprofile.api.security.models.UserDetailsImpl;
@@ -15,6 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -55,60 +60,43 @@ public class AuthController {
 
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
         List<String> roles = userDetails.getAuthorities().stream()
-                .map(item -> item.getAuthority())
+                .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.toList());
-        return ResponseEntity.ok(new JwtResponse(jwt,
+
+        // Возвращает ответ пользователя
+        return new ControllerResponse<>(new JwtResponse(jwt,
                 userDetails.getId(),
                 userDetails.getUsername(),
                 userDetails.getEmail(),
-                roles));
+                roles), 200).response();
     }
 
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
         if (userRepository.existsByUsername(signUpRequest.getUsername())) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new MessageResponse("Error: Username is already taken!"));
+            throw new AuthUsernameIsTakenException(signUpRequest.getUsername());
         }
         if (userRepository.existsByEmail(signUpRequest.getEmail())) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new MessageResponse("Error: Email is already in use!"));
+            throw new AuthEmailIsTakenException(signUpRequest.getEmail());
         }
         // Create new user's account
-        User user = new User(signUpRequest.getUsername(),
-                signUpRequest.getEmail(),
-                encoder.encode(signUpRequest.getPassword()));
+        User user = new User(signUpRequest.getUsername(), signUpRequest.getEmail(), encoder.encode(signUpRequest.getPassword()));
         Set<String> strRoles = signUpRequest.getRole();
         Set<Role> roles = new HashSet<>();
-        if (strRoles == null) {
-            Role userRole = roleRepository.findByName(UserRoleName.ROLE_USER)
-                    .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-            roles.add(userRole);
-        } else {
-            strRoles.forEach(role -> {
-                switch (role) {
-                    case "admin":
-                        Role adminRole = roleRepository.findByName(UserRoleName.ROLE_ADMIN)
-                                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-                        roles.add(adminRole);
-                        break;
-                    case "mod":
-                        Role modRole = roleRepository.findByName(UserRoleName.ROLE_MODER)
-                                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-                        roles.add(modRole);
-                        break;
-                    default:
-                        Role userRole = roleRepository.findByName(UserRoleName.ROLE_USER)
-                                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-                        roles.add(userRole);
-                }
-            });
-        }
+
+
+        Role userRole = roleRepository.findByName(UserRoleName.ROLE_USER)
+                .orElseThrow(() -> new AuthRoleNotFoundException(UserRoleName.ROLE_USER));
+        roles.add(userRole);
+
+        Role filesUploadRole = roleRepository.findByName(UserRoleName.ROLE_FILES_UPLOAD)
+                .orElseThrow(() -> new AuthRoleNotFoundException(UserRoleName.ROLE_FILES_UPLOAD));
+        roles.add(filesUploadRole);
+
         user.setRoles(roles);
         userRepository.save(user);
-        return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
+
+        return new ControllerResponse<Boolean>(true, 200).response();
     }
 }
 

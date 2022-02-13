@@ -23,4 +23,9 @@ public class ExceptionsController {
         return new ControllerResponse<Node>("Meta profile is not denied", HttpStatus.FORBIDDEN).response();
     }
 
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity EceptionError(Exception ex){
+        return new ControllerResponse<Object>(ex.getMessage(), HttpStatus.BAD_REQUEST).response();
+    }
+
 }
