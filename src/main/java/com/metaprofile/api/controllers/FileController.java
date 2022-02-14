@@ -26,6 +26,7 @@ import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Objects;
 
+// @todo - добавить функционал сессии загрузки файла (как в instagram)
 @RestController
 @RequestMapping(value = "/api/v1/file")
 public class FileController {
@@ -43,7 +44,7 @@ public class FileController {
     }
 
     @PostMapping("/upload")
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasRole('USER') && hasRole('FILES_UPLOAD')")
     public ResponseEntity<ControllerResponse<UploadFileResponse>> uploadFile(@RequestParam("file") MultipartFile file, Authentication authentication) throws NoSuchAlgorithmException {
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
 
