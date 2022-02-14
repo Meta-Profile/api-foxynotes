@@ -37,6 +37,9 @@ public class User {
     @Column(name = "email")
     private String email;
 
+    @Column(name = "avatar_file_id")
+    private Long avatarFileId;
+
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(	name = "users_roles",
             joinColumns = @JoinColumn(name = "user_id"),
@@ -93,5 +96,13 @@ public class User {
 
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
+    }
+
+    public Long getAvatarFileId() {
+        return avatarFileId;
+    }
+
+    public void setAvatarFileId(Long avatarFileId) {
+        this.avatarFileId = avatarFileId;
     }
 }
