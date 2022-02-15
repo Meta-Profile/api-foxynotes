@@ -1,5 +1,6 @@
 package com.metaprofile.api.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.metaprofile.api.model.enums.FileStatus;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -20,12 +21,14 @@ public class File {
     @Column(name = "file_id")
     private Long id;
 
+    @JsonIgnore
     @Column(name = "name")
     private String name;
 
     @Column(name = "real_name")
     private String realName;
 
+    @JsonIgnore
     @Column(name = "path")
     private String path;
 

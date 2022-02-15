@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.security.NoSuchAlgorithmException;
+import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.*;
 
@@ -125,5 +126,12 @@ public class UploaderController {
         }
 
         return new ControllerResponse<>(true, 200).response();
+    }
+
+    @GetMapping("/list")
+    @PreAuthorize("hasRole('USER')")
+    public ResponseEntity<?> GetFilesList(Authentication authentication){
+        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+        return ControllerResponse.ok(fileService.getListWithoutRemoved(userDetails.getId())).response();
     }
 }

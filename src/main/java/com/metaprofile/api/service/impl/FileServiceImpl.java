@@ -7,6 +7,9 @@ import com.metaprofile.api.repository.FileRepository;
 import com.metaprofile.api.service.FileService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class FileServiceImpl implements FileService {
 
@@ -26,7 +29,8 @@ public class FileServiceImpl implements FileService {
     public File getFileById(Long fileId, Long userId) {
         File file = fileRepository.findById(fileId).orElseThrow(FileNotFoundException::new);
         if (file.getStatus().equals(FileStatus.DELETED)) throw new FileNotFoundException();
-        if (file.getStatus().equals(FileStatus.PRIVATE) && !file.getSenderId().equals(userId)) throw new FileNotFoundException();
+        if (file.getStatus().equals(FileStatus.PRIVATE) && !file.getSenderId().equals(userId))
+            throw new FileNotFoundException();
         return file;
     }
 
@@ -67,5 +71,16 @@ public class FileServiceImpl implements FileService {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public List<File> getList(Long userId) {
+        return fileRepository.findBySenderId(userId);
+    }
+
+    @Override
+    public List<File> getListWithoutRemoved(Long userId) {
+        List<File> files = this.getList(userId);
+        return files.stream().filter(s -> !s.getStatus().equals(FileStatus.DELETED)).collect(Collectors.toList());
     }
 }
