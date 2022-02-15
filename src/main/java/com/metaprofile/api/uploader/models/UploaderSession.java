@@ -1,10 +1,10 @@
 package com.metaprofile.api.uploader.models;
 
 import com.metaprofile.api.uploader.enums.UploadSessionStatus;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 import java.sql.Timestamp;
 import java.time.Instant;
 
@@ -18,12 +18,12 @@ public class UploaderSession {
     @Nullable
     private Long fileId;
 
-    @NotBlank
+    @NotNull
     private Long userId;
 
-    @NotBlank
+    @NotNull
     @Enumerated(EnumType.ORDINAL)
-    private UploadSessionStatus completed = UploadSessionStatus.CREATED;
+    private UploadSessionStatus completed;
 
     @Nullable
     private Timestamp timeStarted;
@@ -42,7 +42,7 @@ public class UploaderSession {
      * Создает сессию загрузчика
      * @param userId
      */
-    public UploaderSession(Long userId){
+    public UploaderSession(@NotNull Long userId){
         this.userId = userId;
         this.timeStarted = Timestamp.from(Instant.now());
         this.completed = UploadSessionStatus.CREATED;

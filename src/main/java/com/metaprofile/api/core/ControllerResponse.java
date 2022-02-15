@@ -13,6 +13,24 @@ import org.jetbrains.annotations.Nullable;
 public class ControllerResponse<T> {
 
     /**
+     * Возвращает оформленный ответ
+     * @param response
+     * @param <T>
+     * @return
+     */
+    public static <T> ControllerResponse<T> ok(@Nullable T response){
+        return new ControllerResponse<T>(response, 200);
+    }
+
+    public static ControllerResponse<?> error(String text, HttpStatus status){
+        return new ControllerResponse<>(text, status);
+    }
+
+    public static ControllerResponse<?> error(String text, Integer status){
+        return new ControllerResponse<>(text, status);
+    }
+
+    /**
      * Ответ
      */
     @Nullable
