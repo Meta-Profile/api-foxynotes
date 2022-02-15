@@ -3,7 +3,6 @@ package com.metaprofile.api.controllers;
 import com.metaprofile.api.core.ControllerResponse;
 import com.metaprofile.api.model.File;
 import com.metaprofile.api.model.enums.FileStatus;
-import com.metaprofile.api.payloads.request.FileStatusRequest;
 import com.metaprofile.api.security.models.UserDetailsImpl;
 import com.metaprofile.api.service.FileService;
 import com.metaprofile.api.service.impl.FileStorageService;
@@ -20,7 +19,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
-// @todo - добавить функционал сессии загрузки файла (как в instagram)
 @RestController
 @RequestMapping(value = "/api/v1/file")
 public class FileController {
