@@ -3,7 +3,7 @@ package com.metaprofile.api.service.impl;
 import com.metaprofile.api.exceptions.FileNotFoundException;
 import com.metaprofile.api.model.File;
 import com.metaprofile.api.model.enums.FileStatus;
-import com.metaprofile.api.repository.FileRepository;
+import com.metaprofile.api.uploader.repositories.FileRepository;
 import com.metaprofile.api.service.FileService;
 import org.springframework.stereotype.Service;
 

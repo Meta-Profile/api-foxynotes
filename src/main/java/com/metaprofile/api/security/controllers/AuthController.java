@@ -1,4 +1,4 @@
-package com.metaprofile.api.controllers;
+package com.metaprofile.api.security.controllers;
 
 import com.metaprofile.api.core.ControllerResponse;
 import com.metaprofile.api.security.exceptions.AuthEmailIsTakenException;
@@ -11,9 +11,8 @@ import com.metaprofile.api.security.models.UserRoleName;
 import com.metaprofile.api.payloads.request.LoginRequest;
 import com.metaprofile.api.payloads.request.SignupRequest;
 import com.metaprofile.api.payloads.response.JwtResponse;
-import com.metaprofile.api.payloads.response.MessageResponse;
-import com.metaprofile.api.repository.RoleRepository;
-import com.metaprofile.api.repository.UserRepository;
+import com.metaprofile.api.security.repositories.RoleRepository;
+import com.metaprofile.api.security.repositories.UserRepository;
 import com.metaprofile.api.security.jwt.JwtUtils;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -34,7 +33,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/v1/auth")
+@RequestMapping("/v1/auth")
 public class AuthController {
 
     private final AuthenticationManager authenticationManager;

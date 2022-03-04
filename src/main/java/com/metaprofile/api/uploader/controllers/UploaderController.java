@@ -3,8 +3,7 @@ package com.metaprofile.api.uploader.controllers;
 import com.metaprofile.api.core.ControllerResponse;
 import com.metaprofile.api.model.File;
 import com.metaprofile.api.model.enums.FileStatus;
-import com.metaprofile.api.payloads.response.UploadFileResponse;
-import com.metaprofile.api.repository.FileRepository;
+import com.metaprofile.api.uploader.repositories.FileRepository;
 import com.metaprofile.api.security.models.UserDetailsImpl;
 import com.metaprofile.api.service.FileService;
 import com.metaprofile.api.service.impl.FileStorageService;
@@ -15,21 +14,17 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.security.NoSuchAlgorithmException;
-import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.*;
 
 
 @RestController
-@RequestMapping(value = "/api/v1/uploader")
+@RequestMapping(value = "/v1/uploader")
 public class UploaderController {
 
     /**

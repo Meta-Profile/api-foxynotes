@@ -1,0 +1,8 @@
+GET http://localhost:8080/v1/metaprofile/categories?lang=ru
+Accept: application/json
+
+###
+
+GET http://localhost:8080/v1/metaprofile/categories?q=о
+Accept: application/json
+

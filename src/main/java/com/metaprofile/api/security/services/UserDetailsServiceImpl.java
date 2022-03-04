@@ -2,7 +2,7 @@ package com.metaprofile.api.security.services;
 
 import com.metaprofile.api.security.models.User;
 import com.metaprofile.api.security.models.UserDetailsImpl;
-import com.metaprofile.api.repository.UserRepository;
+import com.metaprofile.api.security.repositories.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;

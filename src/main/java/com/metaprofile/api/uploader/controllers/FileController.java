@@ -1,4 +1,4 @@
-package com.metaprofile.api.controllers;
+package com.metaprofile.api.uploader.controllers;
 
 import com.metaprofile.api.core.ControllerResponse;
 import com.metaprofile.api.model.File;
@@ -20,7 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
 @RestController
-@RequestMapping(value = "/api/v1/file")
+@RequestMapping(value = "/v1/file")
 public class FileController {
 
     private static final Logger logger = LoggerFactory.getLogger(FileController.class);

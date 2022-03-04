@@ -1,4 +1,4 @@
-package com.metaprofile.api.repository;
+package com.metaprofile.api.security.repositories;
 
 import com.metaprofile.api.security.models.User;
 import org.springframework.data.jpa.repository.JpaRepository;

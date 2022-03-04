@@ -1,4 +1,4 @@
-package com.metaprofile.api.repository;
+package com.metaprofile.api.uploader.repositories;
 
 import com.metaprofile.api.model.File;
 import org.springframework.data.jpa.repository.JpaRepository;

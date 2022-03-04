@@ -74,7 +74,7 @@ public class File {
      */
     public String getURL() {
         return ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path("/api/v1/file/get/")
+                .path("/v1/file/get/")
                 .path(getId().toString())
                 .toUriString();
     }

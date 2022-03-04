@@ -25,7 +25,7 @@ public class NodesController {
         this.nodeService = nodeService;
     }
 
-    @GetMapping(value = "/api/v1/list", produces = "application/json;charset=UTF-8")
+    @GetMapping(value = "/v1/list", produces = "application/json;charset=UTF-8")
     public ResponseEntity<ControllerResponse<List<Node>>> GetList() {
         List<Node> nodes = nodeService.getAll();
         HttpStatus status = HttpStatus.OK;
@@ -38,7 +38,7 @@ public class NodesController {
      * @param nodeId
      * @return
      */
-    @GetMapping(value = "/api/v1/node", produces = "application/json;charset=UTF-8")
+    @GetMapping(value = "/v1/node", produces = "application/json;charset=UTF-8")
     public ResponseEntity<ControllerResponse<Node>> Get(@RequestParam(value = "nodeId") Integer nodeId)
             throws NotFoundMetaProfileException, NotDeniedMetaProfileException {
         // Получение мета профиля
@@ -48,7 +48,7 @@ public class NodesController {
         return new ControllerResponse<>(node, HttpStatus.OK).response();
     }
 
-    @GetMapping(value = "/api/v1/test", produces = "application/json;charset=UTF-8")
+    @GetMapping(value = "/v1/test", produces = "application/json;charset=UTF-8")
     public String Test() {
         return "Мой тест";
     }
