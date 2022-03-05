@@ -7,14 +7,26 @@ import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import javax.validation.constraints.Min;
 import java.util.List;
 
 @Tag(name = "Common Data", description = "Поиск и добавление вспомогательных ресурсов")
 @RestController
 @RequestMapping("/v1/common")
 public class CommonDataController {
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    private static class CommonDataAddPayload{
+        private String value;
+    }
+
     private final CommonDataService commonDataService;
 
     public CommonDataController(CommonDataService commonDataService) {
@@ -49,12 +61,12 @@ public class CommonDataController {
                     description = "MPF рабочего ресурса. Например, если добавление ресурсов идет по цветам, " +
                             "необходимо указать идентификатор сигнатуры 'любимый цвет'"
             )
+            @PathVariable(name = "id", required = true)
                     Long id,
             @Parameter(description = "Добавляемое значение")
-            @RequestParam(name = "value", required = true)
-                    String value
+            @Valid @RequestBody CommonDataAddPayload payload
     ) {
-        return ControllerResponse.ok(commonDataService.add(value, id, 1L));
+        return ControllerResponse.ok(commonDataService.add(payload.getValue(), id, 1L));
     }
 
 }
