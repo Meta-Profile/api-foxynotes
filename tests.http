@@ -1,3 +1,14 @@
+POST http://localhost:8080/v1/metaprofile/data/add
+Content-Type: application/json
+
+{
+  "mpId": 1,
+  "mpcId": 1,
+  "mpfId": 2,
+  "data": {"date": 123}
+}
+
+###
 GET http://localhost:8080/v1/metaprofile/categories?lang=ru
 Accept: application/json
 
@@ -16,3 +27,6 @@ Accept: application/json
 GET http://localhost:8080/v1/metaprofile/get/1
 Accept: application/json
 Lang: ru
+
+###
+

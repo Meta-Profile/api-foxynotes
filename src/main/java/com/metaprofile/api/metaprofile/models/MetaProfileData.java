@@ -1,15 +1,14 @@
 package com.metaprofile.api.metaprofile.models;
 
-import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
-import org.hibernate.annotations.TypeDef;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.io.Serializable;
 
-@Entity
 @Table(name = "meta_profile_data")
-@TypeDef(name = "jsonb", typeClass = JsonBinaryType.class)
-public class MetaProfileData implements Serializable {
+@Entity
+public class MetaProfileData  implements Serializable {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "mpd_id")
@@ -19,13 +18,17 @@ public class MetaProfileData implements Serializable {
     private Long authorId;
 
     @Column(name = "status")
-    private int status;
+    private int status = 1;
 
     @Column(name = "z_position")
-    private int position;
+    private int position = 1;
 
     @Column(name = "mp_id")
     private Long mpId;
+
+    @Type(type = "jsonb")
+    @Column(columnDefinition = "jsonb")
+    private Object data;
 
     @OneToOne
     @JoinColumn(name = "mpc_id")
@@ -35,12 +38,20 @@ public class MetaProfileData implements Serializable {
     @JoinColumn(name = "mpf_id")
     private MetaProfileField field;
 
-    public Long getMpId() {
-        return mpId;
+    public MetaProfileCategory getCategory() {
+        return category;
     }
 
-    public void setMpId(Long mpId) {
-        this.mpId = mpId;
+    public void setCategory(MetaProfileCategory category) {
+        this.category = category;
+    }
+
+    public MetaProfileField getField() {
+        return field;
+    }
+
+    public void setField(MetaProfileField field) {
+        this.field = field;
     }
 
     public Long getMpdId() {
@@ -71,19 +82,19 @@ public class MetaProfileData implements Serializable {
         this.position = position;
     }
 
-    public MetaProfileCategory getCategory() {
-        return category;
+    public Long getMpId() {
+        return mpId;
     }
 
-    public void setCategory(MetaProfileCategory category) {
-        this.category = category;
+    public void setMpId(Long mpId) {
+        this.mpId = mpId;
     }
 
-    public MetaProfileField getField() {
-        return field;
+    public Object getData() {
+        return data;
     }
 
-    public void setField(MetaProfileField field) {
-        this.field = field;
+    public void setData(Object data) {
+        this.data = data;
     }
 }
