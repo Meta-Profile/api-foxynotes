@@ -1,0 +1,27 @@
+### Добавляет мета данные
+
+POST http://localhost:8080/v1/mpd/add
+Content-Type: application/json
+
+{
+  "mpId": 1,
+  "mpfId": 1,
+  "mpcId": 1,
+  "data": {"name":  "Екатерина", "lastname": "Крамер"}
+}
+
+### Удаляет мета данные
+
+POST http://localhost:8080/v1/mpd/remove/1
+Content-Type: application/json
+
+{
+  "mpId": 1
+}
+
+### Получение нформации о поле
+
+GET http://localhost:8080/v1/mpd/get/6
+Accept: application/json
+
+

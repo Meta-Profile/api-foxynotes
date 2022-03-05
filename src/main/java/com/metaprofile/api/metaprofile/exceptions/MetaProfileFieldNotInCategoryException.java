@@ -1,11 +1,18 @@
 package com.metaprofile.api.metaprofile.exceptions;
 
-public class MetaProfileFieldNotInCategoryException extends RuntimeException {
-    public MetaProfileFieldNotInCategoryException() {
-        super("Field not in category");
-    }
+import com.metaprofile.api.metaprofile.errors.MetaProfileErrorMessage;
+import com.metaprofile.api.metaprofile.errors.MetaProfileErrorCode;
 
+import java.text.MessageFormat;
+
+/**
+ *  Сигнатура мета-поля не найдена в категории
+ */
+public class MetaProfileFieldNotInCategoryException extends MetaProfileException {
     public MetaProfileFieldNotInCategoryException(Long mpfId, Long mpcId) {
-        super("Field mpf:" + mpfId + " is not in category i mpc:" + mpcId);
+        super(
+                MessageFormat.format(MetaProfileErrorMessage.fieldNotFoundInCategory, mpfId, mpcId),
+                MetaProfileErrorCode.fieldNotInCategory
+        );
     }
 }

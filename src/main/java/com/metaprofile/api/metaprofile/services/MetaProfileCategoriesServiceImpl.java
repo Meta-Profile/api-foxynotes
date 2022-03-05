@@ -1,7 +1,7 @@
 package com.metaprofile.api.metaprofile.services;
 
 import com.metaprofile.api.core.LangType;
-import com.metaprofile.api.metaprofile.exceptions.MetaProfileCategoryNotFoundException;
+import com.metaprofile.api.metaprofile.exceptions.MetaProfileNotFoundException;
 import com.metaprofile.api.metaprofile.models.MetaProfileCategory;
 import com.metaprofile.api.metaprofile.repositories.MetaProfileCategoriesRepository;
 import org.springframework.stereotype.Service;
@@ -28,8 +28,8 @@ public class MetaProfileCategoriesServiceImpl implements MetaProfileCategoriesSe
     }
 
     @Override
-    public MetaProfileCategory getByMpcId(Long mpcId) throws MetaProfileCategoryNotFoundException {
-        return metaProfileCategoriesRepository.findById(mpcId).orElseThrow(MetaProfileCategoryNotFoundException::new);
+    public MetaProfileCategory getByMpcId(Long mpcId) throws MetaProfileNotFoundException.CategoryException {
+        return metaProfileCategoriesRepository.findById(mpcId).orElseThrow(() -> new MetaProfileNotFoundException.CategoryException(mpcId));
     }
 
     @Override

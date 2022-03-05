@@ -1,5 +1,6 @@
 package com.metaprofile.api.metaprofile.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
@@ -14,9 +15,11 @@ public class MetaProfileData  implements Serializable {
     @Column(name = "mpd_id")
     private Long mpdId;
 
+    @JsonIgnore
     @Column(name = "author_id")
     private Long authorId;
 
+    @JsonIgnore
     @Column(name = "status")
     private int status = 1;
 

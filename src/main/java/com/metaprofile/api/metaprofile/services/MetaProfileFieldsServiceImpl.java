@@ -1,7 +1,7 @@
 package com.metaprofile.api.metaprofile.services;
 
 import com.metaprofile.api.core.LangType;
-import com.metaprofile.api.metaprofile.exceptions.MetaProfileFieldNotFoundException;
+import com.metaprofile.api.metaprofile.exceptions.MetaProfileNotFoundException;
 import com.metaprofile.api.metaprofile.models.MetaProfileField;
 import com.metaprofile.api.metaprofile.repositories.MetaProfileFieldsRepository;
 import org.springframework.stereotype.Service;
@@ -34,8 +34,8 @@ public class MetaProfileFieldsServiceImpl implements MetaProfileFieldsService {
     }
 
     @Override
-    public MetaProfileField getByMpfId(Long mpfId, LangType langType) throws MetaProfileFieldNotFoundException {
-        return metaProfileFieldsRepository.findById(mpfId).orElseThrow(MetaProfileFieldNotFoundException::new);
+    public MetaProfileField getByMpfId(Long mpfId, LangType langType) throws MetaProfileNotFoundException.FieldException {
+        return metaProfileFieldsRepository.findById(mpfId).orElseThrow(() -> new MetaProfileNotFoundException.FieldException(mpfId));
     }
 
     @Override

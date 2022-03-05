@@ -9,7 +9,7 @@ import java.util.List;
 public interface MetaProfileDataRepository extends JpaRepository<MetaProfileData, Long> {
     @Query(
             nativeQuery = true,
-            value = "SELECT mpd_id FROM meta_profile_data WHERE mp_id = :mpId AND mpf_id = :mpfId"
+            value = "SELECT mpd_id FROM meta_profile_data WHERE mp_id = :mpId AND mpf_id = :mpfId and status > 0"
     )
     List<Integer> findAllByMpId(Long mpId, Long mpfId);
 }

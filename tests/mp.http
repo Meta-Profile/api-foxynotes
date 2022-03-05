@@ -1,0 +1,6 @@
+### Возвращает мета профиль
+
+GET http://localhost:8080/v1/mp/get/1
+Accept: application/json
+
+###

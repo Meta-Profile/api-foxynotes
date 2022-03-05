@@ -2,7 +2,7 @@ package com.metaprofile.api.metaprofile.services;
 
 
 import com.metaprofile.api.core.LangType;
-import com.metaprofile.api.metaprofile.exceptions.MetaProfileCategoryNotFoundException;
+import com.metaprofile.api.metaprofile.exceptions.MetaProfileNotFoundException;
 import com.metaprofile.api.metaprofile.models.MetaProfileCategory;
 
 import java.util.List;
@@ -18,9 +18,9 @@ public interface MetaProfileCategoriesService {
      * Returns the meta profile category by id
      * @param mpcId - meta profile category id
      * @return
-     * @throws MetaProfileCategoryNotFoundException
+     * @throws MetaProfileNotFoundCategoryException
      */
-    MetaProfileCategory getByMpcId(Long mpcId) throws MetaProfileCategoryNotFoundException;
+    MetaProfileCategory getByMpcId(Long mpcId) throws MetaProfileNotFoundException.CategoryException;
 
     /**
      * Returns meta profile categories by query

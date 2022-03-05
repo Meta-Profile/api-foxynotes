@@ -2,6 +2,8 @@ package com.metaprofile.api.metaprofile.models;
 
 import com.metaprofile.api.metaprofile.entities.MetaProfileDataComposition;
 import com.metaprofile.api.model.LangTypeModel;
+import org.hibernate.annotations.Where;
+import org.jetbrains.annotations.NotNull;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -30,6 +32,7 @@ public class MetaProfile extends LangTypeModel {
     private Long avatarId;
 
     @OneToMany
+    @Where(clause = "status = 1")
     @JoinColumn(name = "mp_id")
     private Set<MetaProfileData> data;
 
@@ -103,5 +106,41 @@ public class MetaProfile extends LangTypeModel {
         }
 
         return composition;
+    }
+
+    /**
+     * Возвращает true, если мета-профиль содержит сигнатуру поля Meta Profile Field
+     * @param mpfId
+     * @return
+     */
+    public Boolean hasField(Long mpfId){
+        return data.stream().anyMatch(it -> it.getField().getMpfId().equals(mpfId));
+    }
+
+    /**
+     * Возвращает true, если мета-профиль содержит сигнатуру поля Meta Profile Field
+     * @param field
+     * @return
+     */
+    public Boolean hasField(@NotNull MetaProfileField field){
+        return hasField(field.getMpfId());
+    }
+
+    /**
+     Возвращает true, если мета-профиль содержит данные Meta Field Data
+     * @param mpdId
+     * @return
+     */
+    public Boolean hasData(Long mpdId){
+        return data.stream().anyMatch(it -> it.getMpdId().equals(mpdId) && it.getStatus() > 0);
+    }
+
+    /**
+     Возвращает true, если мета-профиль содержит данные Meta Profile Data
+     * @param metaProfileData
+     * @return
+     */
+    public Boolean hasData(@NotNull MetaProfileData metaProfileData){
+        return hasData(metaProfileData.getMpdId());
     }
 }
