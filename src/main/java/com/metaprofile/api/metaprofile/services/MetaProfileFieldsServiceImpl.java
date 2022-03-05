@@ -24,13 +24,13 @@ public class MetaProfileFieldsServiceImpl implements MetaProfileFieldsService {
     public List<MetaProfileField> getAll(LangType lang) {
         return metaProfileFieldsRepository.findAll()
                 .stream()
-                .map((it) -> (MetaProfileField)it.setLangType(lang))
+                .map((it) -> (MetaProfileField) it.setLangType(lang))
                 .collect(Collectors.toList());
     }
 
     @Override
     public List<MetaProfileField> getByMpcId(Long mpcId, LangType lang) {
-        return metaProfileFieldsRepository.findAllByMpcId(mpcId);
+        return metaProfileFieldsRepository.findAllByMpcId(mpcId).stream().map((it) -> (MetaProfileField) it.setLangType(lang)).collect(Collectors.toList());
     }
 
     @Override
@@ -42,7 +42,7 @@ public class MetaProfileFieldsServiceImpl implements MetaProfileFieldsService {
     public List<MetaProfileField> findByTitleQuery(String query, Long mpcId, LangType lang) {
         return metaProfileFieldsRepository.findByQuery(query, mpcId, lang.getRaw())
                 .stream()
-                .map((it) -> (MetaProfileField)it.setLangType(lang))
+                .map((it) -> (MetaProfileField) it.setLangType(lang))
                 .collect(Collectors.toList());
     }
 }

@@ -1,6 +1,6 @@
 package com.metaprofile.api;
 
-import com.metaprofile.api.configuration.FileStorageConfig;
+import com.metaprofile.api.uploader.configuration.FileStorageConfig;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.servers.Server;

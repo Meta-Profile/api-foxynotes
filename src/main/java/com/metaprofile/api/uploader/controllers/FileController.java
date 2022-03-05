@@ -1,11 +1,11 @@
 package com.metaprofile.api.uploader.controllers;
 
 import com.metaprofile.api.core.ControllerResponse;
-import com.metaprofile.api.model.File;
-import com.metaprofile.api.model.enums.FileStatus;
+import com.metaprofile.api.uploader.models.File;
+import com.metaprofile.api.uploader.enums.FileStatus;
 import com.metaprofile.api.security.models.UserDetailsImpl;
-import com.metaprofile.api.service.FileService;
-import com.metaprofile.api.service.impl.FileStorageService;
+import com.metaprofile.api.uploader.services.FileService;
+import com.metaprofile.api.uploader.services.FileStorageService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.Resource;

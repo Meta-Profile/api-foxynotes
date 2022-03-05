@@ -2,10 +2,8 @@ package com.metaprofile.api.metaprofile.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.metaprofile.api.core.LangObject;
-import com.metaprofile.api.model.LangTypeModel;
-import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
+import com.metaprofile.api.core.models.LangTypeModel;
 import org.hibernate.annotations.Type;
-import org.hibernate.annotations.TypeDef;
 
 import javax.persistence.*;
 import java.io.Serializable;

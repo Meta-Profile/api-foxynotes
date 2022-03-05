@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Tag(name = "Meta Profile", description = "Создание и редактирование мета профилей, а также получения необходимых данных")

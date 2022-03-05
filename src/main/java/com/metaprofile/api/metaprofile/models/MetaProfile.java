@@ -2,7 +2,7 @@ package com.metaprofile.api.metaprofile.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.metaprofile.api.metaprofile.entities.MetaProfileDataComposition;
-import com.metaprofile.api.model.LangTypeModel;
+import com.metaprofile.api.core.models.LangTypeModel;
 import org.hibernate.annotations.Where;
 import org.jetbrains.annotations.NotNull;
 

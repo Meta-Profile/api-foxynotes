@@ -1,12 +1,12 @@
 package com.metaprofile.api.uploader.controllers;
 
 import com.metaprofile.api.core.ControllerResponse;
-import com.metaprofile.api.model.File;
-import com.metaprofile.api.model.enums.FileStatus;
+import com.metaprofile.api.uploader.models.File;
+import com.metaprofile.api.uploader.enums.FileStatus;
 import com.metaprofile.api.uploader.repositories.FileRepository;
 import com.metaprofile.api.security.models.UserDetailsImpl;
-import com.metaprofile.api.service.FileService;
-import com.metaprofile.api.service.impl.FileStorageService;
+import com.metaprofile.api.uploader.services.FileService;
+import com.metaprofile.api.uploader.services.FileStorageService;
 import com.metaprofile.api.uploader.enums.UploadSessionStatus;
 import com.metaprofile.api.uploader.models.UploaderSession;
 import com.metaprofile.api.uploader.services.UploaderSessionService;

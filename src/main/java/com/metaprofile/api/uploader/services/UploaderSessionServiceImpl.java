@@ -1,7 +1,7 @@
 package com.metaprofile.api.uploader.services;
 
-import com.metaprofile.api.exceptions.FileNotFoundException;
-import com.metaprofile.api.model.File;
+import com.metaprofile.api.uploader.exceptions.FileNotFoundException;
+import com.metaprofile.api.uploader.models.File;
 import com.metaprofile.api.uploader.repositories.FileRepository;
 import com.metaprofile.api.uploader.enums.UploadSessionStatus;
 import com.metaprofile.api.uploader.exceptions.UploaderSessionForbiddenException;

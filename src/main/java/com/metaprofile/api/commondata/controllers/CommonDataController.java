@@ -1,0 +1,60 @@
+package com.metaprofile.api.commondata.controllers;
+
+import com.metaprofile.api.commondata.models.CommonData;
+import com.metaprofile.api.commondata.services.CommonDataService;
+import com.metaprofile.api.core.ControllerResponse;
+import io.swagger.v3.oas.annotations.ExternalDocumentation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@Tag(name = "Common Data", description = "Поиск и добавление вспомогательных ресурсов")
+@RestController
+@RequestMapping("/v1/common")
+public class CommonDataController {
+    private final CommonDataService commonDataService;
+
+    public CommonDataController(CommonDataService commonDataService) {
+        this.commonDataService = commonDataService;
+    }
+
+    @Operation(
+            summary = "Выполняет поиск вспомогательных ресурсов для MPF",
+            description = "Поиск по фильмам, книгам, вкусам, цветам и др"
+    )
+    @GetMapping("/search/{id:.+}")
+    public ControllerResponse<List<CommonData>> search(
+            @Parameter(
+                    description = "MPF рабочего ресурса. Например, если поиск ресурсов идет по цветам, " +
+                            "необходимо указать идентификатор сигнатуры 'любимый цвет'"
+            )
+            @PathVariable(name = "id", required = true)
+                    Long id,
+            @Parameter(description = "Поисковой запрос")
+            @RequestParam(name = "q", required = true)
+                    String q
+    ) {
+        return ControllerResponse.ok(commonDataService.search(q, id));
+    }
+
+    @Operation(
+            summary = "Добавляет ресурс для поиска"
+    )
+    @PostMapping("/add/{id:.+}")
+    public ControllerResponse<CommonData> add(
+            @Parameter(
+                    description = "MPF рабочего ресурса. Например, если добавление ресурсов идет по цветам, " +
+                            "необходимо указать идентификатор сигнатуры 'любимый цвет'"
+            )
+                    Long id,
+            @Parameter(description = "Добавляемое значение")
+            @RequestParam(name = "value", required = true)
+                    String value
+    ) {
+        return ControllerResponse.ok(commonDataService.add(value, id, 1L));
+    }
+
+}
