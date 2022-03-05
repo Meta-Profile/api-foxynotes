@@ -37,7 +37,7 @@ public class CommonDataController {
             summary = "Выполняет поиск вспомогательных ресурсов для MPF",
             description = "Поиск по фильмам, книгам, вкусам, цветам и др"
     )
-    @GetMapping("/search/{id:.+}")
+    @GetMapping("/search/{mpfId:.+}")
     public ControllerResponse<List<CommonData>> search(
             @Parameter(
                     description = "MPF рабочего ресурса. Например, если поиск ресурсов идет по цветам, " +
@@ -55,7 +55,7 @@ public class CommonDataController {
     @Operation(
             summary = "Добавляет ресурс для поиска"
     )
-    @PostMapping("/add/{id:.+}")
+    @PostMapping("/add/{mpfId:.+}")
     public ControllerResponse<CommonData> add(
             @Parameter(
                     description = "MPF рабочего ресурса. Например, если добавление ресурсов идет по цветам, " +
