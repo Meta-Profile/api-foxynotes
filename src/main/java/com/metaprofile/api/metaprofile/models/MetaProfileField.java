@@ -12,11 +12,14 @@ import javax.persistence.*;
  *  The meta profile category
  */
 @Entity
-@Table(name = "meta_profile_categories")
+@Table(name = "meta_profile_fields")
 @TypeDef(name = "jsonb", typeClass = JsonBinaryType.class)
-public class MetaProfileCategory extends LangTypeModel {
+public class MetaProfileField extends LangTypeModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "mpf_id")
+    private Long mpfId;
+
     @Column(name = "mpc_id")
     private Long mpcId;
 
@@ -24,16 +27,12 @@ public class MetaProfileCategory extends LangTypeModel {
     @Column(columnDefinition = "jsonb")
     private LangObject title;
 
-    @Column
-    private String icon;
-
-
-    public MetaProfileCategory() {
+    public MetaProfileField() {
     }
 
-    public MetaProfileCategory(LangObject title, String icon) {
+    public MetaProfileField(Long mpcId, LangObject title) {
+        this.mpcId = mpcId;
         this.title = title;
-        this.icon = icon;
     }
 
     public Long getMpcId() {
@@ -44,10 +43,6 @@ public class MetaProfileCategory extends LangTypeModel {
         return title.extract(this.langType);
     }
 
-    public String getIcon() {
-        return icon;
-    }
-
     public void setMpcId(Long mpcId) {
         this.mpcId = mpcId;
     }
@@ -56,8 +51,11 @@ public class MetaProfileCategory extends LangTypeModel {
         this.title = title;
     }
 
-    public void setIcon(String icon) {
-        this.icon = icon;
+    public Long getMpfId() {
+        return mpfId;
     }
 
+    public void setMpfId(Long mpfId) {
+        this.mpfId = mpfId;
+    }
 }
