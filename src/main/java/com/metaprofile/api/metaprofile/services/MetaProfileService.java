@@ -14,4 +14,21 @@ public interface MetaProfileService {
      * @throws MetaProfileNotFoundException.FieldException
      */
     MetaProfile getProfileById(Long id, LangType lang) throws MetaProfileNotFoundException.FieldException;
+
+    /**
+     * Создает новый мета профиль
+     *
+     * @param title
+     * @param authorId
+     * @return
+     */
+    MetaProfile create(String title, Long authorId);
+
+    /**
+     * Удаляет мета профиль
+     * @param mpId
+     * @param authorId
+     * @return
+     */
+    Boolean remove(Long mpId, Long authorId);
 }

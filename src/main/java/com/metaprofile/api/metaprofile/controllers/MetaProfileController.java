@@ -12,9 +12,13 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 
@@ -22,6 +26,12 @@ import java.util.List;
 @RestController
 @RequestMapping(value = "/v1/mp")
 public class MetaProfileController {
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    private static class MetaProfileCreatePayload {
+        private String title;
+    }
 
     private final MetaProfileCategoriesService metaProfileCategoriesService;
     private final MetaProfileFieldsService metaProfileFieldsService;
@@ -88,11 +98,34 @@ public class MetaProfileController {
     @GetMapping("/get/{id:.+}")
     @Operation(summary = "Возвращает мета профиль")
     public ResponseEntity<ControllerResponse<MetaProfile>> getProfile(
-            @PathVariable(name = "id") Long id,
-            @RequestHeader(name = "Lang", defaultValue = "ru") String lang
+            @PathVariable(name = "id")
+                    Long id,
+            @RequestHeader(name = "Lang", defaultValue = "ru")
+            @Parameter(required = false)
+            @Schema(allowableValues = {"ru", "en"})
+                    String lang
     ) {
         LangType langType = LangType.raw(lang);
         return ControllerResponse.ok(metaProfileService.getProfileById(id, langType)).response();
+    }
+
+    @PostMapping("/create")
+    @Operation(summary = "Создает мета профиль")
+    public ControllerResponse<MetaProfile> create(
+            @Valid @RequestBody MetaProfileCreatePayload payload
+    ) {
+        return ControllerResponse.ok(metaProfileService.create(
+                payload.title,
+                1L
+        ));
+    }
+
+    @PostMapping("/remove/{id:.+}")
+    @Operation(summary = "Создает мета профиль")
+    public ControllerResponse<Boolean> remove(
+            @PathVariable(name = "id", required = true) Long id
+    ) {
+        return ControllerResponse.ok(metaProfileService.remove(id, 1L));
     }
 
 }
