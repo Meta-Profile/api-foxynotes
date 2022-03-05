@@ -7,6 +7,7 @@ import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 /**
  *  The meta profile category
@@ -60,4 +61,16 @@ public class MetaProfileCategory extends LangTypeModel {
         this.icon = icon;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        MetaProfileCategory category = (MetaProfileCategory) o;
+        return mpcId.equals(category.mpcId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(mpcId);
+    }
 }

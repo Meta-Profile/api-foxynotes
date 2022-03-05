@@ -11,3 +11,8 @@ Accept: application/json
 GET http://localhost:8080/v1/metaprofile/fields?mpcId=1&q=д
 Accept: application/json
 
+###
+
+GET http://localhost:8080/v1/metaprofile/get/1
+Accept: application/json
+Lang: ru

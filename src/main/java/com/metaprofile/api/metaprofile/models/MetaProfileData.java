@@ -1,67 +1,39 @@
 package com.metaprofile.api.metaprofile.models;
 
+import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
+import org.hibernate.annotations.TypeDef;
+
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "meta_profile_data")
-public class MetaProfileData {
+@TypeDef(name = "jsonb", typeClass = JsonBinaryType.class)
+public class MetaProfileData implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "mpd_id")
     private Long mpdId;
 
-    @Column
-    private Long mpcId;
-
-    @Column
-    private Long mpfId;
-
-    @Column
-    private Long mpId;
-
-    @Column
+    @Column(name = "author_id")
     private Long authorId;
 
-    @Column
+    @Column(name = "status")
     private int status;
 
-    @Column
+    @Column(name = "z_position")
     private int position;
 
-    public MetaProfileData() {
-    }
+    @Column(name = "mp_id")
+    private Long mpId;
 
-    public MetaProfileData(Long mpcId, Long mpfId, Long mpId, Long authorId, int status) {
-        this.mpcId = mpcId;
-        this.mpfId = mpfId;
-        this.mpId = mpId;
-        this.authorId = authorId;
-        this.status = status;
-    }
+    @OneToOne
+    @JoinColumn(name = "mpc_id")
+    private MetaProfileCategory category;
 
-    public Long getMpdId() {
-        return mpdId;
-    }
-
-    public void setMpdId(Long mpdId) {
-        this.mpdId = mpdId;
-    }
-
-    public Long getMpcId() {
-        return mpcId;
-    }
-
-    public void setMpcId(Long mpcId) {
-        this.mpcId = mpcId;
-    }
-
-    public Long getMpfId() {
-        return mpfId;
-    }
-
-    public void setMpfId(Long mpfId) {
-        this.mpfId = mpfId;
-    }
+    @OneToOne
+    @JoinColumn(name = "mpf_id")
+    private MetaProfileField field;
 
     public Long getMpId() {
         return mpId;
@@ -69,6 +41,10 @@ public class MetaProfileData {
 
     public void setMpId(Long mpId) {
         this.mpId = mpId;
+    }
+
+    public Long getMpdId() {
+        return mpdId;
     }
 
     public Long getAuthorId() {
@@ -85,5 +61,29 @@ public class MetaProfileData {
 
     public void setStatus(int status) {
         this.status = status;
+    }
+
+    public int getPosition() {
+        return position;
+    }
+
+    public void setPosition(int position) {
+        this.position = position;
+    }
+
+    public MetaProfileCategory getCategory() {
+        return category;
+    }
+
+    public void setCategory(MetaProfileCategory category) {
+        this.category = category;
+    }
+
+    public MetaProfileField getField() {
+        return field;
+    }
+
+    public void setField(MetaProfileField field) {
+        this.field = field;
     }
 }
