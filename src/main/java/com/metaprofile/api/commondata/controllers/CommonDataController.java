@@ -43,13 +43,13 @@ public class CommonDataController {
                     description = "MPF рабочего ресурса. Например, если поиск ресурсов идет по цветам, " +
                             "необходимо указать идентификатор сигнатуры 'любимый цвет'"
             )
-            @PathVariable(name = "id", required = true)
-                    Long id,
+            @PathVariable(name = "mpfId", required = true)
+                    Long mpfId,
             @Parameter(description = "Поисковой запрос")
             @RequestParam(name = "q", required = true)
                     String q
     ) {
-        return ControllerResponse.ok(commonDataService.search(q, id));
+        return ControllerResponse.ok(commonDataService.search(q, mpfId));
     }
 
     @Operation(
@@ -61,12 +61,12 @@ public class CommonDataController {
                     description = "MPF рабочего ресурса. Например, если добавление ресурсов идет по цветам, " +
                             "необходимо указать идентификатор сигнатуры 'любимый цвет'"
             )
-            @PathVariable(name = "id", required = true)
-                    Long id,
+            @PathVariable(name = "mpfId", required = true)
+                    Long mpfId,
             @Parameter(description = "Добавляемое значение")
             @Valid @RequestBody CommonDataAddPayload payload
     ) {
-        return ControllerResponse.ok(commonDataService.add(payload.getValue(), id, 1L));
+        return ControllerResponse.ok(commonDataService.add(payload.getValue(), mpfId, 1L));
     }
 
 }
