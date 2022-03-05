@@ -14,6 +14,8 @@ import com.metaprofile.api.payloads.response.JwtResponse;
 import com.metaprofile.api.security.repositories.RoleRepository;
 import com.metaprofile.api.security.repositories.UserRepository;
 import com.metaprofile.api.security.jwt.JwtUtils;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -34,6 +36,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/v1/auth")
+@Tag(name = "Auth", description = "Авторизация и регистрация пользователей")
 public class AuthController {
 
     private final AuthenticationManager authenticationManager;
@@ -50,6 +53,7 @@ public class AuthController {
         this.jwtUtils = jwtUtils;
     }
 
+    @Operation(summary = "Выполняет авторизацию пользователя и возаращет JWT токен")
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
         Authentication authentication = authenticationManager.authenticate(
@@ -72,6 +76,7 @@ public class AuthController {
                 ), 200).response();
     }
 
+    @Operation(summary = "Создает нового пользователя")
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
         if (userRepository.existsByUsername(signUpRequest.getUsername())) {
