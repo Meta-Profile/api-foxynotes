@@ -5,6 +5,8 @@ import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.sql.Timestamp;
+import java.time.Instant;
 
 @Table(name = "meta_profile_data")
 @Entity
@@ -28,6 +30,12 @@ public class MetaProfileData  implements Serializable {
 
     @Column(name = "mp_id")
     private Long mpId;
+
+    @Column(name = "create_time")
+    private Timestamp createTime = Timestamp.from(Instant.now());
+
+    @Column(name = "edit_time")
+    private Timestamp editTime = Timestamp.from(Instant.now());
 
     @Type(type = "jsonb")
     @Column(columnDefinition = "jsonb")
@@ -99,5 +107,28 @@ public class MetaProfileData  implements Serializable {
 
     public void setData(Object data) {
         this.data = data;
+    }
+
+    public Timestamp getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Timestamp createTime) {
+        this.createTime = createTime;
+    }
+
+    public Timestamp getEditTime() {
+        return editTime;
+    }
+
+    public void setEditTime(Timestamp editTime) {
+        this.editTime = editTime;
+    }
+
+    /**
+     * Обновляет время редактирования
+     */
+    public void updateEditTime(){
+        this.setEditTime(Timestamp.from(Instant.now()));
     }
 }

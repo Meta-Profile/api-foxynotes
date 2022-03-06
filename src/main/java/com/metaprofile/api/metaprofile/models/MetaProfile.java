@@ -3,10 +3,13 @@ package com.metaprofile.api.metaprofile.models;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.metaprofile.api.metaprofile.entities.MetaProfileDataComposition;
 import com.metaprofile.api.core.models.LangTypeModel;
+import com.metaprofile.api.uploader.models.File;
 import org.hibernate.annotations.Where;
 import org.jetbrains.annotations.NotNull;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -27,14 +30,17 @@ public class MetaProfile extends LangTypeModel {
     private Long authorId;
 
     @Column
-    private Long avatarId;
-
-    @Column
     private String color;
 
     @JsonIgnore
     @Column
     private Integer status = 1;
+
+    @Column(name = "create_time")
+    private Timestamp createTime = Timestamp.from(Instant.now());
+
+    @Column(name = "edit_time")
+    private Timestamp editTime = Timestamp.from(Instant.now());
 
     @OneToMany
     @Where(clause = "status = 1")
@@ -44,6 +50,10 @@ public class MetaProfile extends LangTypeModel {
     @OneToOne
     @JoinColumn(name = "mpt_id")
     private MetaProfileType type;
+
+    @OneToOne
+    @JoinColumn(name = "avatar_id")
+    private File avatar;
 
     public Long getMpId() {
         return mpId;
@@ -93,16 +103,32 @@ public class MetaProfile extends LangTypeModel {
         this.status = status;
     }
 
-    public Long getAvatarId() {
-        return avatarId;
-    }
-
-    public void setAvatarId(Long avatarId) {
-        this.avatarId = avatarId;
-    }
-
     public void setData(Set<MetaProfileData> data) {
         this.data = data;
+    }
+
+    public Timestamp getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Timestamp createTime) {
+        this.createTime = createTime;
+    }
+
+    public Timestamp getEditTime() {
+        return editTime;
+    }
+
+    public void setEditTime(Timestamp editTime) {
+        this.editTime = editTime;
+    }
+
+    public File getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(File avatar) {
+        this.avatar = avatar;
     }
 
     public List<MetaProfileDataComposition> getComposition() {
@@ -167,5 +193,12 @@ public class MetaProfile extends LangTypeModel {
      */
     public Boolean hasData(@NotNull MetaProfileData metaProfileData) {
         return hasData(metaProfileData.getMpdId());
+    }
+
+    /**
+     * Обновляет время редактирования
+     */
+    public void updateEditTime(){
+        this.setEditTime(Timestamp.from(Instant.now()));
     }
 }

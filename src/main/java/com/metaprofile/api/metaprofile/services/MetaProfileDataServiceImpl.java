@@ -133,6 +133,7 @@ public class MetaProfileDataServiceImpl implements MetaProfileDataService {
 
         // Выполнение обновления
         metaProfileData.setData(data);
+        metaProfileData.updateEditTime();
         return metaProfileDataRepository.save(metaProfileData);
     }
 

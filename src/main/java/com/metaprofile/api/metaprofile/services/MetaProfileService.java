@@ -4,6 +4,9 @@ import com.metaprofile.api.core.LangType;
 import com.metaprofile.api.metaprofile.exceptions.MetaProfileNotFoundException;
 import com.metaprofile.api.metaprofile.models.MetaProfile;
 
+/**
+ * Сервис для работы с мета профилями
+ */
 public interface MetaProfileService {
 
     /**
