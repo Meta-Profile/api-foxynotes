@@ -1,5 +1,6 @@
 package com.metaprofile.api.security.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.metaprofile.api.uploader.models.File;
 import org.jetbrains.annotations.NotNull;
 
@@ -29,6 +30,7 @@ public class User {
     private String username;
 
     @NotBlank
+    @JsonIgnore
     @Size(max = 120)
     @Column(name = "password")
     private String password;
@@ -47,6 +49,22 @@ public class User {
 
     @Column(name = "mp_id")
     private Long mpId;
+
+    @JsonIgnore
+    @Column(name = "reg_ip")
+    private String regIp;
+
+    @JsonIgnore
+    @Column(name = "reg_agent")
+    private String regAgent;
+
+    @JsonIgnore
+    @Column(name = "reg_country")
+    private String regCountry;
+
+    @JsonIgnore
+    @Column(name = "reg_fp")
+    private String regFp;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(	name = "users_roles",
@@ -140,5 +158,37 @@ public class User {
 
     public void setMpId(Long mpId) {
         this.mpId = mpId;
+    }
+
+    public String getRegIp() {
+        return regIp;
+    }
+
+    public void setRegIp(String regIp) {
+        this.regIp = regIp;
+    }
+
+    public String getRegAgent() {
+        return regAgent;
+    }
+
+    public void setRegAgent(String regAgent) {
+        this.regAgent = regAgent;
+    }
+
+    public String getRegCountry() {
+        return regCountry;
+    }
+
+    public void setRegCountry(String regCountry) {
+        this.regCountry = regCountry;
+    }
+
+    public String getRegFp() {
+        return regFp;
+    }
+
+    public void setRegFp(String regFp) {
+        this.regFp = regFp;
     }
 }

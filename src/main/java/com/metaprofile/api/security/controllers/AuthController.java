@@ -6,103 +6,78 @@ import com.metaprofile.api.security.exceptions.AuthRoleNotFoundException;
 import com.metaprofile.api.security.exceptions.AuthUsernameIsTakenException;
 import com.metaprofile.api.security.models.Role;
 import com.metaprofile.api.security.models.User;
-import com.metaprofile.api.security.models.UserDetailsImpl;
 import com.metaprofile.api.security.models.UserRoleName;
 import com.metaprofile.api.security.payloads.request.LoginRequest;
 import com.metaprofile.api.security.payloads.request.SignupRequest;
 import com.metaprofile.api.security.payloads.response.JwtResponse;
 import com.metaprofile.api.security.repositories.RoleRepository;
 import com.metaprofile.api.security.repositories.UserRepository;
-import com.metaprofile.api.security.jwt.JwtUtils;
+import com.metaprofile.api.security.services.AuthService;
+import com.metaprofile.api.security.services.UserLoginSessionsService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.HashSet;
-import java.util.List;
+import java.util.Locale;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/v1/auth")
 @Tag(name = "Auth", description = "Авторизация и регистрация пользователей")
 public class AuthController {
 
-    private final AuthenticationManager authenticationManager;
-    private final UserRepository userRepository;
-    private final RoleRepository roleRepository;
-    private final PasswordEncoder encoder;
-    private final JwtUtils jwtUtils;
+    private final AuthService authService;
 
-    public AuthController(AuthenticationManager authenticationManager, UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder encoder, JwtUtils jwtUtils) {
-        this.authenticationManager = authenticationManager;
-        this.userRepository = userRepository;
-        this.roleRepository = roleRepository;
-        this.encoder = encoder;
-        this.jwtUtils = jwtUtils;
+    public AuthController(AuthService authService) {
+        this.authService = authService;
     }
 
     @Operation(summary = "Выполняет авторизацию пользователя и возаращет JWT токен")
     @PostMapping("/signin")
-    public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        String jwt = jwtUtils.generateJwtToken(authentication);
+    public ControllerResponse<JwtResponse> authenticateUser(
+            @Valid @RequestBody LoginRequest loginRequest,
+            HttpServletRequest request,
+            Locale locale
+    ) {
+        String remoteAddr = request.getHeader("X-FORWARDED-FOR");
+        if (remoteAddr == null || "".equals(remoteAddr)) remoteAddr = request.getRemoteAddr();
 
-        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-        List<String> roles = userDetails.getAuthorities().stream()
-                .map(GrantedAuthority::getAuthority)
-                .collect(Collectors.toList());
+        String agent = request.getHeader("User-Agent");
+        String country = locale.getLanguage();
+        String fp = request.getHeader("fp");
 
         // Возвращает ответ пользователя
-        return new ControllerResponse<>(new JwtResponse(jwt,
-                userDetails.getId(),
-                userDetails.getUsername(),
-                userDetails.getEmail(),
-                roles,
-                userDetails.getAvatarFileId()
-                ), 200).response();
+        return ControllerResponse.ok(authService.signin(loginRequest.getUsername(), loginRequest.getPassword(), remoteAddr, agent, country, fp));
     }
 
     @Operation(summary = "Создает нового пользователя")
     @PostMapping("/signup")
-    public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
-        if (userRepository.existsByUsername(signUpRequest.getUsername())) {
-            throw new AuthUsernameIsTakenException(signUpRequest.getUsername());
-        }
-        if (userRepository.existsByEmail(signUpRequest.getEmail())) {
-            throw new AuthEmailIsTakenException(signUpRequest.getEmail());
-        }
-        // Create new user's account
-        User user = new User(signUpRequest.getUsername(), signUpRequest.getEmail(), encoder.encode(signUpRequest.getPassword()));
-        Set<String> strRoles = signUpRequest.getRole();
-        Set<Role> roles = new HashSet<>();
+    public ControllerResponse<User> registerUser(
+            @Valid @RequestBody SignupRequest signUpRequest,
+            HttpServletRequest request,
+            Locale locale
+    )  {
+        String remoteAddr = request.getHeader("X-FORWARDED-FOR");
+        if (remoteAddr == null || "".equals(remoteAddr)) remoteAddr = request.getRemoteAddr();
 
+        String regAgent = request.getHeader("User-Agent");
+        String regCountry = locale.getLanguage();
+        String fp = request.getHeader("fp");
 
-        Role userRole = roleRepository.findByName(UserRoleName.ROLE_USER)
-                .orElseThrow(() -> new AuthRoleNotFoundException(UserRoleName.ROLE_USER));
-        roles.add(userRole);
-
-        Role filesUploadRole = roleRepository.findByName(UserRoleName.ROLE_FILES_UPLOAD)
-                .orElseThrow(() -> new AuthRoleNotFoundException(UserRoleName.ROLE_FILES_UPLOAD));
-        roles.add(filesUploadRole);
-
-        user.setRoles(roles);
-        userRepository.save(user);
-
-        return new ControllerResponse<Boolean>(true, 200).response();
+        return ControllerResponse.ok(authService.signup(
+                signUpRequest.getUsername(),
+                signUpRequest.getEmail(),
+                signUpRequest.getPassword(),
+                remoteAddr,
+                regAgent,
+                regCountry,
+                fp
+        ));
     }
 }
 

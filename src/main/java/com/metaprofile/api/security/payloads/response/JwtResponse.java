@@ -1,5 +1,6 @@
 package com.metaprofile.api.security.payloads.response;
 
+import com.metaprofile.api.uploader.models.File;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -10,17 +11,16 @@ public class JwtResponse {
     private Long userId;
     private String username;
     private String email;
-    @Nullable
-    private Long avatarFileId;
-    private List<String> roles;
 
-    public JwtResponse(String token, Long userId, String username, String email, List<String> roles, Long avatarFileId) {
+    @Nullable
+    private File avatar;
+
+    public JwtResponse(String token, Long userId, String username, String email, File avatar) {
         this.token = token;
         this.userId = userId;
         this.username = username;
         this.email = email;
-        this.roles = roles;
-        this.avatarFileId = avatarFileId;
+        this.avatar = avatar;
     }
 
     public String getToken() {
@@ -55,14 +55,6 @@ public class JwtResponse {
         this.email = email;
     }
 
-    public List<String> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(List<String> roles) {
-        this.roles = roles;
-    }
-
     public String getType() {
         return type;
     }
@@ -71,7 +63,12 @@ public class JwtResponse {
         this.type = type;
     }
 
-    public void setAvatarFileId(@Nullable Long avatarFileId) {
-        this.avatarFileId = avatarFileId;
+    @Nullable
+    public File getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(@Nullable File avatar) {
+        this.avatar = avatar;
     }
 }
