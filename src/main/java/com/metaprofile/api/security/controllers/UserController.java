@@ -1,5 +1,6 @@
 package com.metaprofile.api.security.controllers;
 
+import com.metaprofile.api.core.ControllerResponse;
 import com.metaprofile.api.security.models.UserDetailsImpl;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
@@ -13,9 +14,9 @@ public class UserController {
 
     @GetMapping("/me")
     @PreAuthorize("hasRole('USER')")
-    public String userAccess(Authentication authentication) {
+    public ControllerResponse<UserDetailsImpl> userAccess(Authentication authentication) {
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-        return userDetails.getUsername() + ' ' + userDetails.getEmail();
+        return ControllerResponse.ok(userDetails);
     }
 
 }

@@ -11,4 +11,5 @@ public class SecurityErrorMessage {
     public static final String userAuthorizationUndefined = "Пользователь с таким логином или паролем не найден!";
     public static final String loginSessionNotFound = "Сессия авторизации не найдена!";
 
+    public static final String userNotFound = "Пользователь не найден!";
 }
