@@ -69,7 +69,7 @@ public class UploaderController {
     @PreAuthorize("hasRole('FILES_UPLOAD')")
     public ResponseEntity<ControllerResponse<UploaderSession>> Create(Authentication authentication) {
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-        UploaderSession session = uploaderSessionService.createSession(userDetails.getId());
+        UploaderSession session = uploaderSessionService.createSession(userDetails.getUserId());
         return ControllerResponse.ok(session).response();
     }
 
@@ -84,7 +84,7 @@ public class UploaderController {
     @PreAuthorize("hasRole('FILES_UPLOAD')")
     public ResponseEntity<ControllerResponse<UploaderSession>> Get(@PathVariable Long id, Authentication authentication) {
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-        return ControllerResponse.ok(uploaderSessionService.getByIdSafe(id, userDetails.getId())).response();
+        return ControllerResponse.ok(uploaderSessionService.getByIdSafe(id, userDetails.getUserId())).response();
     }
 
 
@@ -93,7 +93,7 @@ public class UploaderController {
     public ResponseEntity<?> uploadFile(@PathVariable Long id, @RequestParam("file") MultipartFile file, @RequestParam(name = "type", required = false, defaultValue = "1") Integer fileStatus, Authentication authentication) {
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
         // Получаем активную сессию
-        UploaderSession uploaderSession = uploaderSessionService.getByIdSafe(id, userDetails.getId());
+        UploaderSession uploaderSession = uploaderSessionService.getByIdSafe(id, userDetails.getUserId());
 
         if (uploaderSession.getCompleted().equals(UploadSessionStatus.COMPLETED)) {
             // Сообщить что нельзя загружать файл по данной сессии
@@ -110,7 +110,7 @@ public class UploaderController {
             String fileName = StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));
 
             // @fixme создать метод в сервисе
-            File f = new File(fileName, file, userDetails.getId(), FileStatus.values()[fileStatus]);
+            File f = new File(fileName, file, userDetails.getUserId(), FileStatus.values()[fileStatus]);
             f.setPath(fileStorageService.storeFile(file, f.getName()));
 
             File savedFile = fileRepository.save(f);
@@ -127,6 +127,6 @@ public class UploaderController {
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity<?> GetFilesList(Authentication authentication){
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-        return ControllerResponse.ok(fileService.getListWithoutRemoved(userDetails.getId())).response();
+        return ControllerResponse.ok(fileService.getListWithoutRemoved(userDetails.getUserId())).response();
     }
 }

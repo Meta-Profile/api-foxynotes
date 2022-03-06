@@ -37,7 +37,7 @@ public class FileController {
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity<ControllerResponse<Boolean>> remove(@PathVariable Long fileId, Authentication authentication) {
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-        return new ControllerResponse<>(fileService.removeFile(fileId, userDetails.getId()), 200).response();
+        return new ControllerResponse<>(fileService.removeFile(fileId, userDetails.getUserId()), 200).response();
     }
 
     @PostMapping("/status/{fileId:.+}")
@@ -47,10 +47,10 @@ public class FileController {
         Boolean result = false;
         switch (status.toLowerCase()) {
             case "public":
-                result = fileService.updateStatus(fileId, userDetails.getId(), FileStatus.PUBLIC);
+                result = fileService.updateStatus(fileId, userDetails.getUserId(), FileStatus.PUBLIC);
                 break;
             case "private":
-                result = fileService.updateStatus(fileId, userDetails.getId(), FileStatus.PRIVATE);
+                result = fileService.updateStatus(fileId, userDetails.getUserId(), FileStatus.PRIVATE);
                 break;
         }
         return ControllerResponse.ok(result).response();
@@ -60,7 +60,7 @@ public class FileController {
     public ResponseEntity<Resource> downloadFile(@PathVariable Long fileId, HttpServletRequest request, Authentication authentication) {
         // Load file as Resource
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-        File file = fileService.getFileById(fileId, userDetails.getId());
+        File file = fileService.getFileById(fileId, userDetails.getUserId());
 
         Resource resource = fileStorageService.loadFileAsResource(file.getPath());
 

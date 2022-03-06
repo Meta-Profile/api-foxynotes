@@ -57,12 +57,12 @@ public class AuthServiceImpl implements AuthService {
 
         Set<Role> roles = new HashSet<>();
         roles.add(roleRepository.findByName(UserRoleName.ROLE_USER).orElseThrow(() -> new SecurityRoleNotFoundException(UserRoleName.ROLE_USER)));
-        roles.add(roleRepository.findByName(UserRoleName.ROLE_USER).orElseThrow(() -> new SecurityRoleNotFoundException(UserRoleName.ROLE_FILES_UPLOAD)));
-        roles.add(roleRepository.findByName(UserRoleName.ROLE_USER).orElseThrow(() -> new SecurityRoleNotFoundException(UserRoleName.ROLE_META_PROFILES_CREATE)));
-        roles.add(roleRepository.findByName(UserRoleName.ROLE_USER).orElseThrow(() -> new SecurityRoleNotFoundException(UserRoleName.ROLE_META_PROFILES_EDIT)));
-        roles.add(roleRepository.findByName(UserRoleName.ROLE_USER).orElseThrow(() -> new SecurityRoleNotFoundException(UserRoleName.ROLE_META_PROFILES_LOCAL_VIEW)));
-        roles.add(roleRepository.findByName(UserRoleName.ROLE_USER).orElseThrow(() -> new SecurityRoleNotFoundException(UserRoleName.ROLE_META_PROFILES_GLOBAL_VIEW)));
-        roles.add(roleRepository.findByName(UserRoleName.ROLE_USER).orElseThrow(() -> new SecurityRoleNotFoundException(UserRoleName.ROLE_META_PROFILES_PUBLIC_VIEW)));
+        roles.add(roleRepository.findByName(UserRoleName.ROLE_FILES_UPLOAD).orElseThrow(() -> new SecurityRoleNotFoundException(UserRoleName.ROLE_FILES_UPLOAD)));
+        roles.add(roleRepository.findByName(UserRoleName.ROLE_META_PROFILES_CREATE).orElseThrow(() -> new SecurityRoleNotFoundException(UserRoleName.ROLE_META_PROFILES_CREATE)));
+        roles.add(roleRepository.findByName(UserRoleName.ROLE_META_PROFILES_EDIT).orElseThrow(() -> new SecurityRoleNotFoundException(UserRoleName.ROLE_META_PROFILES_EDIT)));
+        roles.add(roleRepository.findByName(UserRoleName.ROLE_META_PROFILES_LOCAL_VIEW).orElseThrow(() -> new SecurityRoleNotFoundException(UserRoleName.ROLE_META_PROFILES_LOCAL_VIEW)));
+        roles.add(roleRepository.findByName(UserRoleName.ROLE_META_PROFILES_GLOBAL_VIEW).orElseThrow(() -> new SecurityRoleNotFoundException(UserRoleName.ROLE_META_PROFILES_GLOBAL_VIEW)));
+        roles.add(roleRepository.findByName(UserRoleName.ROLE_META_PROFILES_PUBLIC_VIEW).orElseThrow(() -> new SecurityRoleNotFoundException(UserRoleName.ROLE_META_PROFILES_PUBLIC_VIEW)));
         user.setRoles(roles);
 
         user.setRegAgent(regAgent);
