@@ -3,6 +3,9 @@ package com.metaprofile.api.metaprofile.services;
 import com.metaprofile.api.core.LangType;
 import com.metaprofile.api.metaprofile.exceptions.MetaProfileNotFoundException;
 import com.metaprofile.api.metaprofile.models.MetaProfile;
+import com.metaprofile.api.metaprofile.payloads.MetaProfileUpdatePayload;
+
+import java.util.Optional;
 
 /**
  * Сервис для работы с мета профилями
@@ -26,6 +29,15 @@ public interface MetaProfileService {
      * @return
      */
     MetaProfile create(String title, Long authorId);
+
+    /**
+     * Обновляет мета профиль
+     *
+     * @param mpId
+     * @param authorId
+     * @return
+     */
+    MetaProfile update(Long mpId, Long authorId, MetaProfileUpdatePayload payload);
 
     /**
      * Удаляет мета профиль

@@ -5,6 +5,7 @@ import com.metaprofile.api.core.LangType;
 import com.metaprofile.api.metaprofile.models.MetaProfile;
 import com.metaprofile.api.metaprofile.models.MetaProfileCategory;
 import com.metaprofile.api.metaprofile.models.MetaProfileField;
+import com.metaprofile.api.metaprofile.payloads.MetaProfileUpdatePayload;
 import com.metaprofile.api.metaprofile.services.MetaProfileCategoriesService;
 import com.metaprofile.api.metaprofile.services.MetaProfileFieldsService;
 import com.metaprofile.api.metaprofile.services.MetaProfileService;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 
@@ -127,6 +129,15 @@ public class MetaProfileController {
             @PathVariable(name = "id", required = true) Long id
     ) {
         return ControllerResponse.ok(metaProfileService.remove(id, 1L));
+    }
+
+    @PostMapping("/update/{mpId:.+}")
+    @Operation(summary = "Изменяет мета профиль")
+    public ControllerResponse<MetaProfile> update(
+            @PathVariable(name = "mpId", required = true) Long mpId,
+            @RequestBody MetaProfileUpdatePayload payload
+    ) {
+        return ControllerResponse.ok(metaProfileService.update(mpId, 1L, payload));
     }
 
 }

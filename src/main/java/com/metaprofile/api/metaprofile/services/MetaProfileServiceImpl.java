@@ -4,11 +4,13 @@ import com.metaprofile.api.core.LangType;
 import com.metaprofile.api.metaprofile.exceptions.MetaProfileNotFoundException;
 import com.metaprofile.api.metaprofile.models.MetaProfile;
 import com.metaprofile.api.metaprofile.models.MetaProfileType;
+import com.metaprofile.api.metaprofile.payloads.MetaProfileUpdatePayload;
 import com.metaprofile.api.metaprofile.repositories.MetaProfileTypesRepository;
 import com.metaprofile.api.metaprofile.repositories.MetaProfilesRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
+import java.util.Optional;
 
 @Service
 public class MetaProfileServiceImpl implements MetaProfileService {
@@ -46,11 +48,29 @@ public class MetaProfileServiceImpl implements MetaProfileService {
         return (MetaProfile) metaProfilesRepository.save(metaProfile).setLangType(LangType.ru);
     }
 
+
     @Override
     public Boolean remove(Long mpId, Long authorId) {
         MetaProfile metaProfile = getProfileById(mpId, LangType.ru);
         metaProfile.setStatus(0);
         metaProfilesRepository.save(metaProfile);
         return true;
+    }
+
+    @Override
+    public MetaProfile update(Long mpId, Long authorId, MetaProfileUpdatePayload payload) {
+        MetaProfile metaProfile = metaProfilesRepository.findById(mpId).orElseThrow(() -> new MetaProfileNotFoundException(mpId));
+        if(metaProfile.getStatus() < 1) throw new MetaProfileNotFoundException(mpId);
+        Boolean changed = false;
+        if(payload.getTitle() != null) {
+            metaProfile.setTitle(payload.getTitle());
+            changed = true;
+        }
+        if(payload.getColor() != null) {
+            metaProfile.setColor(payload.getColor());
+            changed = true;
+        }
+        if(changed) metaProfile.updateEditTime();
+        return metaProfilesRepository.save(metaProfile);
     }
 }
