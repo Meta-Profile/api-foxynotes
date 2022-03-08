@@ -112,6 +112,23 @@ public class MetaProfileController {
         return ControllerResponse.ok(metaProfileService.getProfileById(id, langType)).response();
     }
 
+    /**
+     * Возвращает список мета-профилей
+     */
+    @GetMapping("/list")
+    @Operation(summary = "Возвращает список мета-профилей авторизованного пользователя")
+    public ControllerResponse<List<MetaProfile>> list(
+            @RequestHeader(name = "Lang", defaultValue = "ru")
+            @Parameter(required = false)
+            @Schema(allowableValues = {"ru", "en"})
+                    String lang
+    ) {
+        LangType langType = LangType.raw(lang);
+        return ControllerResponse.ok(
+                metaProfileService.list(1L, langType)
+        );
+    }
+
     @PostMapping("/create")
     @Operation(summary = "Создает мета профиль")
     public ControllerResponse<MetaProfile> create(

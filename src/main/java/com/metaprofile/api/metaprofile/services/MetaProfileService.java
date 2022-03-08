@@ -5,6 +5,7 @@ import com.metaprofile.api.metaprofile.exceptions.MetaProfileNotFoundException;
 import com.metaprofile.api.metaprofile.models.MetaProfile;
 import com.metaprofile.api.metaprofile.payloads.MetaProfileUpdatePayload;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -46,4 +47,13 @@ public interface MetaProfileService {
      * @return
      */
     Boolean remove(Long mpId, Long authorId);
+
+    /**
+     * Листинг мета профилей
+     *
+     * @param authorId
+     * @param lang
+     * @return
+     */
+    List<MetaProfile> list(Long authorId, LangType lang);
 }

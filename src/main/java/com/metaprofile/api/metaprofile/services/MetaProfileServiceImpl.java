@@ -10,6 +10,8 @@ import com.metaprofile.api.metaprofile.repositories.MetaProfilesRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class MetaProfileServiceImpl implements MetaProfileService {
@@ -24,7 +26,7 @@ public class MetaProfileServiceImpl implements MetaProfileService {
     @Override
     public MetaProfile getProfileById(Long id, LangType lang) throws MetaProfileNotFoundException {
         MetaProfile metaProfile = metaProfilesRepository.findById(id).map(it -> (MetaProfile) it.setLangType(lang)).orElseThrow(() -> new MetaProfileNotFoundException(id));
-        if(metaProfile.getStatus() < 1) throw new MetaProfileNotFoundException(id);
+        if (metaProfile.getStatus() < 1) throw new MetaProfileNotFoundException(id);
         return metaProfile;
     }
 
@@ -59,17 +61,24 @@ public class MetaProfileServiceImpl implements MetaProfileService {
     @Override
     public MetaProfile update(Long mpId, Long authorId, MetaProfileUpdatePayload payload) {
         MetaProfile metaProfile = metaProfilesRepository.findById(mpId).orElseThrow(() -> new MetaProfileNotFoundException(mpId));
-        if(metaProfile.getStatus() < 1) throw new MetaProfileNotFoundException(mpId);
+        if (metaProfile.getStatus() < 1) throw new MetaProfileNotFoundException(mpId);
         boolean changed = false;
-        if(payload.getTitle() != null) {
+        if (payload.getTitle() != null) {
             metaProfile.setTitle(payload.getTitle());
             changed = true;
         }
-        if(payload.getColor() != null) {
+        if (payload.getColor() != null) {
             metaProfile.setColor(payload.getColor());
             changed = true;
         }
-        if(changed) metaProfile.updateEditTime();
+        if (changed) metaProfile.updateEditTime();
         return metaProfilesRepository.save(metaProfile);
+    }
+
+    @Override
+    public List<MetaProfile> list(Long authorId, LangType lang) {
+        List<MetaProfile> metaProfiles = metaProfilesRepository.findAllByAuthorId(authorId);
+        return metaProfiles.stream().map(it -> (MetaProfile) it.setLangType(lang))
+                .collect(Collectors.toList());
     }
 }
