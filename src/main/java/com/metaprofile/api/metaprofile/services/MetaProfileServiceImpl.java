@@ -10,7 +10,6 @@ import com.metaprofile.api.metaprofile.repositories.MetaProfilesRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
-import java.util.Optional;
 
 @Service
 public class MetaProfileServiceImpl implements MetaProfileService {
@@ -61,7 +60,7 @@ public class MetaProfileServiceImpl implements MetaProfileService {
     public MetaProfile update(Long mpId, Long authorId, MetaProfileUpdatePayload payload) {
         MetaProfile metaProfile = metaProfilesRepository.findById(mpId).orElseThrow(() -> new MetaProfileNotFoundException(mpId));
         if(metaProfile.getStatus() < 1) throw new MetaProfileNotFoundException(mpId);
-        Boolean changed = false;
+        boolean changed = false;
         if(payload.getTitle() != null) {
             metaProfile.setTitle(payload.getTitle());
             changed = true;
