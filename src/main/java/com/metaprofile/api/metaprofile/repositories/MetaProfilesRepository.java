@@ -10,7 +10,7 @@ import java.util.Optional;
 public interface MetaProfilesRepository extends JpaRepository<MetaProfile, Long> {
     @Query(
             nativeQuery = true,
-            value = "SELECT * FROM meta_profiles WHERE mp_id = :mpId"
+            value = "SELECT * FROM meta_profiles WHERE mp_id = :mpId AND status > 0"
     )
     Optional<MetaProfile> findByMpId(Long mpId);
 
@@ -19,5 +19,9 @@ public interface MetaProfilesRepository extends JpaRepository<MetaProfile, Long>
      * @param authorId
      * @return
      */
+    @Query(
+            nativeQuery = true,
+            value = "SELECT * FROM meta_profiles WHERE author_id = :authorId AND status > 0"
+    )
     List<MetaProfile> findAllByAuthorId(Long authorId);
 }
