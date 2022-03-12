@@ -38,12 +38,12 @@ public class MetaProfileServiceImpl implements MetaProfileService {
      * @return
      */
     @Override
-    public MetaProfile create(String title, Long authorId) {
+    public MetaProfile create(String title, String color, Long authorId) {
         MetaProfileType metaProfileType = metaProfileTypesRepository.getById(1L);
         MetaProfile metaProfile = new MetaProfile();
         metaProfile.setTitle(title);
         metaProfile.setAuthorId(authorId);
-        metaProfile.setColor("#a05636");
+        metaProfile.setColor(color == null ? "#a05636" : color);
         metaProfile.setType(metaProfileType);
         metaProfile.setData(new HashSet<>());
         return (MetaProfile) metaProfilesRepository.save(metaProfile).setLangType(LangType.ru);

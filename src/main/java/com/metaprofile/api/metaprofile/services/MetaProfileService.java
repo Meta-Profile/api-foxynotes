@@ -29,7 +29,7 @@ public interface MetaProfileService {
      * @param authorId
      * @return
      */
-    MetaProfile create(String title, Long authorId);
+    MetaProfile create(String title, String color, Long authorId);
 
     /**
      * Обновляет мета профиль

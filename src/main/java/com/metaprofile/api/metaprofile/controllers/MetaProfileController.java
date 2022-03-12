@@ -16,24 +16,26 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 
 @Tag(name = "Meta Profile", description = "Создание и редактирование мета профилей, а также получения необходимых данных")
 @RestController
 @RequestMapping(value = "/v1/mp")
 public class MetaProfileController {
+
     @Data
     @AllArgsConstructor
     @NoArgsConstructor
     private static class MetaProfileCreatePayload {
         private String title;
+        @Nullable
+        private String color;
     }
 
     private final MetaProfileCategoriesService metaProfileCategoriesService;
@@ -135,7 +137,8 @@ public class MetaProfileController {
             @Valid @RequestBody MetaProfileCreatePayload payload
     ) {
         return ControllerResponse.ok(metaProfileService.create(
-                payload.title,
+                payload.getTitle(),
+                payload.getColor(),
                 1L
         ));
     }
