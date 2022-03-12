@@ -55,4 +55,4 @@ pipelines:
                 SSH_USER: "root"
                 SERVER: "notafoks.me"
                 SSH_KEY: $SERVER_SSH_KEY
-                COMMAND: ""/home/meta/deploy_api.sh ${BITBUCKET_BUILD_NUMBER}"
+                COMMAND: "/home/meta/deploy_api.sh ${BITBUCKET_BUILD_NUMBER}"
