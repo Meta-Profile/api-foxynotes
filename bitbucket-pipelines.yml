@@ -35,7 +35,7 @@ pipelines:
           artifacts:
             - "*.tar"
       - step:
-          name: Deploy to Production
+          name: Deploy to Dockerhub
           deployment: Production
           script:
             - echo ${DOCKERHUB_PASSWORD} | docker login --username "$DOCKERHUB_USERNAME" --password-stdin
@@ -47,3 +47,12 @@ pipelines:
             - docker push "${IMAGE}:${VERSION}"
           services:
             - docker
+      - step:
+          name: Deploy to Server
+          script:
+            - pipe: atlassian/ssh-run:0.4.0
+              variables:
+                SSH_USER: "root"
+                SERVER: "notafoks.me"
+                SSH_KEY: $SERVER_SSH_KEY
+                COMMAND: ""/home/meta/deploy_api.sh ${BITBUCKET_BUILD_NUMBER}"
