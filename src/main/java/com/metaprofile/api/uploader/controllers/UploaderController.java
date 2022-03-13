@@ -10,6 +10,8 @@ import com.metaprofile.api.uploader.services.FileStorageService;
 import com.metaprofile.api.uploader.enums.UploadSessionStatus;
 import com.metaprofile.api.uploader.models.UploaderSession;
 import com.metaprofile.api.uploader.services.UploaderSessionService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -24,6 +26,7 @@ import java.util.Objects;
 
 
 @RestController
+@Tag(name = "Files Uploader", description = "Загрузка файлов")
 @RequestMapping(value = "/v1/uploader")
 public class UploaderController {
 
@@ -67,6 +70,10 @@ public class UploaderController {
      */
     @GetMapping("/create")
     @PreAuthorize("hasRole('FILES_UPLOAD')")
+    @Operation(
+            summary = "Создает сессию загрузки файла",
+            description = "Метод открывает новую сессию загрузки файлов"
+    )
     public ResponseEntity<ControllerResponse<UploaderSession>> Create(Authentication authentication) {
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
         UploaderSession session = uploaderSessionService.createSession(userDetails.getUserId());
@@ -82,6 +89,7 @@ public class UploaderController {
      */
     @GetMapping("/upload:{id:.+}")
     @PreAuthorize("hasRole('FILES_UPLOAD')")
+    @Operation(summary = "Получает статут сесии загрузки файла")
     public ResponseEntity<ControllerResponse<UploaderSession>> Get(@PathVariable Long id, Authentication authentication) {
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
         return ControllerResponse.ok(uploaderSessionService.getByIdSafe(id, userDetails.getUserId())).response();
@@ -90,6 +98,7 @@ public class UploaderController {
 
     @PostMapping("/upload:{id:.+}")
     @PreAuthorize("hasRole('USER') && hasRole('FILES_UPLOAD')")
+    @Operation(summary = "Выполняет загрузку файла")
     public ResponseEntity<?> uploadFile(@PathVariable Long id, @RequestParam("file") MultipartFile file, @RequestParam(name = "type", required = false, defaultValue = "1") Integer fileStatus, Authentication authentication) {
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
         // Получаем активную сессию
@@ -125,7 +134,8 @@ public class UploaderController {
 
     @GetMapping("/list")
     @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<?> GetFilesList(Authentication authentication){
+    @Operation(summary = "Отображает ве файлы, загруженные пользователем")
+    public ResponseEntity<?> GetFilesList(Authentication authentication) {
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
         return ControllerResponse.ok(fileService.getListWithoutRemoved(userDetails.getUserId())).response();
     }

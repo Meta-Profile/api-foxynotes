@@ -54,7 +54,7 @@ public class UploaderSessionServiceImpl implements UploaderSessionService {
         File file = fileRepository.findById(fileId).orElseThrow(FileNotFoundException::new);
         uploaderSession.setCompleted(UploadSessionStatus.COMPLETED);
         uploaderSession.setTimeCompleted(Timestamp.from(Instant.now()));
-        uploaderSession.setFileId(file.getId());
+        uploaderSession.setFile(file);
         return uploaderSessionRepository.save(uploaderSession);
     }
 

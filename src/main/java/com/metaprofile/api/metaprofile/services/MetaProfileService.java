@@ -4,6 +4,7 @@ import com.metaprofile.api.core.LangType;
 import com.metaprofile.api.metaprofile.exceptions.MetaProfileNotFoundException;
 import com.metaprofile.api.metaprofile.models.MetaProfile;
 import com.metaprofile.api.metaprofile.payloads.MetaProfileUpdatePayload;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Optional;
@@ -29,7 +30,7 @@ public interface MetaProfileService {
      * @param authorId
      * @return
      */
-    MetaProfile create(String title, String color, Long authorId);
+    MetaProfile create(String title, String color, @Nullable Long fileId, Long authorId);
 
     /**
      * Обновляет мета профиль

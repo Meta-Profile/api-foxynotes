@@ -1,6 +1,7 @@
 package com.metaprofile.api.uploader.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.metaprofile.api.uploader.enums.FileStatus;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -14,6 +15,7 @@ import java.util.Base64;
 
 @Entity
 @Table(name = "files")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class File {
 
     @Id

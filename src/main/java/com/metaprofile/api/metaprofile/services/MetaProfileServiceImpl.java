@@ -7,6 +7,9 @@ import com.metaprofile.api.metaprofile.models.MetaProfileType;
 import com.metaprofile.api.metaprofile.payloads.MetaProfileUpdatePayload;
 import com.metaprofile.api.metaprofile.repositories.MetaProfileTypesRepository;
 import com.metaprofile.api.metaprofile.repositories.MetaProfilesRepository;
+import com.metaprofile.api.uploader.models.File;
+import com.metaprofile.api.uploader.repositories.FileRepository;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
@@ -17,10 +20,12 @@ import java.util.stream.Collectors;
 public class MetaProfileServiceImpl implements MetaProfileService {
     private final MetaProfilesRepository metaProfilesRepository;
     private final MetaProfileTypesRepository metaProfileTypesRepository;
+    private final FileRepository fileRepository;
 
-    public MetaProfileServiceImpl(MetaProfilesRepository metaProfilesRepository, MetaProfileTypesRepository metaProfileTypesRepository) {
+    public MetaProfileServiceImpl(MetaProfilesRepository metaProfilesRepository, MetaProfileTypesRepository metaProfileTypesRepository, FileRepository fileRepository) {
         this.metaProfilesRepository = metaProfilesRepository;
         this.metaProfileTypesRepository = metaProfileTypesRepository;
+        this.fileRepository = fileRepository;
     }
 
     @Override
@@ -38,14 +43,23 @@ public class MetaProfileServiceImpl implements MetaProfileService {
      * @return
      */
     @Override
-    public MetaProfile create(String title, String color, Long authorId) {
+    public MetaProfile create(String title, String color, @Nullable Long fileId, Long authorId) {
         MetaProfileType metaProfileType = metaProfileTypesRepository.getById(1L);
+
         MetaProfile metaProfile = new MetaProfile();
         metaProfile.setTitle(title);
         metaProfile.setAuthorId(authorId);
         metaProfile.setColor(color == null ? "#a05636" : color);
         metaProfile.setType(metaProfileType);
         metaProfile.setData(new HashSet<>());
+
+        if(fileId != null){
+            File file = fileRepository.getById(fileId);
+            if(!file.getSenderId().equals(authorId))
+                throw new RuntimeException("Невозможно установить не свой файл!");
+            metaProfile.setAvatar(file);
+        }
+
         return (MetaProfile) metaProfilesRepository.save(metaProfile).setLangType(LangType.ru);
     }
 

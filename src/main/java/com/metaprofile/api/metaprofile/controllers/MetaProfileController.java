@@ -9,6 +9,7 @@ import com.metaprofile.api.metaprofile.payloads.MetaProfileUpdatePayload;
 import com.metaprofile.api.metaprofile.services.MetaProfileCategoriesService;
 import com.metaprofile.api.metaprofile.services.MetaProfileFieldsService;
 import com.metaprofile.api.metaprofile.services.MetaProfileService;
+import com.metaprofile.api.security.models.UserDetailsImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -18,6 +19,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -36,6 +39,8 @@ public class MetaProfileController {
         private String title;
         @Nullable
         private String color;
+        @Nullable
+        private Long fileId;
     }
 
     private final MetaProfileCategoriesService metaProfileCategoriesService;
@@ -101,6 +106,7 @@ public class MetaProfileController {
      * Возвращает мета профиль и его композицию
      */
     @GetMapping("/get/{id:.+}")
+    @PreAuthorize("hasRole('USER')")
     @Operation(summary = "Возвращает мета профиль")
     public ResponseEntity<ControllerResponse<MetaProfile>> getProfile(
             @PathVariable(name = "id")
@@ -108,7 +114,8 @@ public class MetaProfileController {
             @RequestHeader(name = "Lang", defaultValue = "ru")
             @Parameter(required = false)
             @Schema(allowableValues = {"ru", "en"})
-                    String lang
+                    String lang,
+            Authentication authentication
     ) {
         LangType langType = LangType.raw(lang);
         return ControllerResponse.ok(metaProfileService.getProfileById(id, langType)).response();
@@ -118,46 +125,59 @@ public class MetaProfileController {
      * Возвращает список мета-профилей
      */
     @GetMapping("/list")
+    @PreAuthorize("hasRole('USER')")
     @Operation(summary = "Возвращает список мета-профилей авторизованного пользователя")
     public ControllerResponse<List<MetaProfile>> list(
             @RequestHeader(name = "Lang", defaultValue = "ru")
             @Parameter(required = false)
             @Schema(allowableValues = {"ru", "en"})
-                    String lang
+                    String lang,
+            Authentication authentication
     ) {
         LangType langType = LangType.raw(lang);
+        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
         return ControllerResponse.ok(
-                metaProfileService.list(1L, langType)
+                metaProfileService.list(userDetails.getUserId(), langType)
         );
     }
 
     @PostMapping("/create")
     @Operation(summary = "Создает мета профиль")
+    @PreAuthorize("hasRole('USER')")
     public ControllerResponse<MetaProfile> create(
-            @Valid @RequestBody MetaProfileCreatePayload payload
+            @Valid @RequestBody MetaProfileCreatePayload payload,
+            Authentication authentication
     ) {
+        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
         return ControllerResponse.ok(metaProfileService.create(
                 payload.getTitle(),
                 payload.getColor(),
-                1L
+                payload.getFileId(),
+                userDetails.getUserId()
         ));
     }
 
     @PostMapping("/remove/{id:.+}")
+    @PreAuthorize("hasRole('USER')")
     @Operation(summary = "Создает мета профиль")
     public ControllerResponse<Boolean> remove(
-            @PathVariable(name = "id", required = true) Long id
+            @PathVariable(name = "id", required = true) Long id,
+            Authentication authentication
     ) {
-        return ControllerResponse.ok(metaProfileService.remove(id, 1L));
+        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+        return ControllerResponse.ok(metaProfileService.remove(id, userDetails.getUserId()));
     }
 
     @PostMapping("/update/{mpId:.+}")
+    @PreAuthorize("hasRole('USER')")
     @Operation(summary = "Изменяет мета профиль")
     public ControllerResponse<MetaProfile> update(
             @PathVariable(name = "mpId", required = true) Long mpId,
-            @RequestBody MetaProfileUpdatePayload payload
+            @RequestBody MetaProfileUpdatePayload payload,
+            Authentication authentication
     ) {
-        return ControllerResponse.ok(metaProfileService.update(mpId, 1L, payload));
+        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+        return ControllerResponse.ok(metaProfileService.update(mpId, userDetails.getUserId(), payload));
     }
 
 }

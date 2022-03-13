@@ -1,6 +1,7 @@
 package com.metaprofile.api.uploader.models;
 
 import com.metaprofile.api.uploader.enums.UploadSessionStatus;
+import io.swagger.v3.oas.annotations.media.Schema;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -15,14 +16,12 @@ public class UploaderSession {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long sessionId;
 
-    @Nullable
-    private Long fileId;
-
     @NotNull
     private Long userId;
 
     @NotNull
     @Enumerated(EnumType.ORDINAL)
+    @Schema(allowableValues = {"CREATED", "COMPLETED", "WAITING", "ERROR"})
     private UploadSessionStatus completed;
 
     @Nullable
@@ -31,18 +30,23 @@ public class UploaderSession {
     @Nullable
     private Timestamp timeCompleted;
 
+    @OneToOne
+    @JoinColumn(name = "file_id")
+    File file;
+
     /**
      * Пустой конструктор
      */
-    public UploaderSession(){
+    public UploaderSession() {
 
     }
 
     /**
      * Создает сессию загрузчика
+     *
      * @param userId
      */
-    public UploaderSession(@NotNull Long userId){
+    public UploaderSession(@NotNull Long userId) {
         this.userId = userId;
         this.timeStarted = Timestamp.from(Instant.now());
         this.completed = UploadSessionStatus.CREATED;
@@ -56,13 +60,12 @@ public class UploaderSession {
         this.sessionId = sessionId;
     }
 
-    @Nullable
-    public Long getFileId() {
-        return fileId;
+    public File getFile() {
+        return file;
     }
 
-    public void setFileId(@Nullable Long fileId) {
-        this.fileId = fileId;
+    public void setFile(File file) {
+        this.file = file;
     }
 
     public Long getUserId() {
