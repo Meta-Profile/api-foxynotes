@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.metaprofile.api.uploader.enums.FileStatus;
 import org.apache.commons.io.FilenameUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -50,6 +51,11 @@ public class File {
     @Column(name = "time")
     private Timestamp time;
 
+    @Transient
+    @JsonIgnore
+    @Value("${metaprofile.app.url}")
+    private String appUrl;
+
     public File() {
     }
 
@@ -75,10 +81,7 @@ public class File {
      * @return путь до файла
      */
     public String getURL() {
-        return ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path("/v1/file/get/")
-                .path(getId().toString())
-                .toUriString();
+        return appUrl + "/v1/file/get/" + getId();
     }
 
     /**

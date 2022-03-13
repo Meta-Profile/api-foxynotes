@@ -11,6 +11,7 @@ public class JwtResponse {
     private Long userId;
     private String username;
     private String email;
+    private String metaId;
 
     @Nullable
     private File avatar;
@@ -21,6 +22,7 @@ public class JwtResponse {
         this.username = username;
         this.email = email;
         this.avatar = avatar;
+        this.metaId = username;
     }
 
     public String getToken() {
@@ -70,5 +72,13 @@ public class JwtResponse {
 
     public void setAvatar(@Nullable File avatar) {
         this.avatar = avatar;
+    }
+
+    public String getMetaId() {
+        return metaId;
+    }
+
+    public void setMetaId(String metaId) {
+        this.metaId = metaId;
     }
 }
